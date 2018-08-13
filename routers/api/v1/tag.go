@@ -10,7 +10,7 @@ import (
 	"github.com/Unknwon/com"
 	"github.com/astaxie/beego/validation"
 	"github.com/gin-gonic/gin"
-	"github.com/gpmgo/gopm/modules/log"
+	"github.com/lexkong/log"
 )
 
 //获取多个文章标签
@@ -65,7 +65,7 @@ func AddTag(c *gin.Context) {
 		}
 	} else {
 		for _, err := range valid.Errors {
-			log.Info(err.Key, err.Message)
+			log.Infof(err.Key, err.Message)
 		}
 	}
 
@@ -114,7 +114,7 @@ func EditTag(c *gin.Context) {
 		}
 	} else {
 		for _, err := range valid.Errors {
-			log.Info(err.Key, err.Message)
+			log.Infof(err.Key, err.Message)
 		}
 	}
 
@@ -142,7 +142,7 @@ func DeleteTag(c *gin.Context) {
 		}
 	} else {
 		for _, err := range valid.Errors {
-			log.Info(err.Key, err.Message)
+			log.Infof(err.Key, err.Message)
 		}
 	}
 
