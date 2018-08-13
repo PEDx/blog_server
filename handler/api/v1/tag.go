@@ -1,11 +1,11 @@
 package v1
 
 import (
+	. "blog_server/handler"
 	"blog_server/models"
-	"blog_server/pkg/e"
+	"blog_server/pkg/errno"
 	"blog_server/pkg/setting"
 	"blog_server/pkg/utils"
-	"net/http"
 
 	"github.com/Unknwon/com"
 	"github.com/astaxie/beego/validation"
@@ -30,16 +30,12 @@ func GetTags(c *gin.Context) {
 		maps["state"] = state
 	}
 
-	code := e.SUCCESS
+	err := errno.OK
 
 	data["lists"] = models.GetTags(utils.GetPage(c), setting.PageSize, maps)
 	data["total"] = models.GetTagTotal(maps)
 
-	c.JSON(http.StatusOK, gin.H{
-		"code": code,
-		"msg":  e.GetMsg(code),
-		"data": data,
-	})
+	SendResponse(c, err, data)
 }
 
 //新增文章标签
@@ -55,25 +51,22 @@ func AddTag(c *gin.Context) {
 	valid.MaxSize(createdBy, 100, "created_by").Message("创建人最长为100字符")
 	valid.Range(state, 0, 1, "state").Message("状态只允许0或1")
 
-	code := e.INVALID_PARAMS
+	err := errno.ErrValidation
+
 	if !valid.HasErrors() {
 		if !models.ExistTagByName(name) {
-			code = e.SUCCESS
+			err = errno.OK
 			models.AddTag(name, state, createdBy)
 		} else {
-			code = e.ERROR_EXIST_TAG
+			err = errno.ErrTagExist
 		}
 	} else {
-		for _, err := range valid.Errors {
-			log.Infof(err.Key, err.Message)
+		for _, e := range valid.Errors {
+			log.Infof(e.Key, e.Message)
 		}
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"code": code,
-		"msg":  e.GetMsg(code),
-		"data": make(map[string]string),
-	})
+	SendResponse(c, err, make(map[string]string))
 }
 
 //修改文章标签
@@ -95,9 +88,9 @@ func EditTag(c *gin.Context) {
 	valid.MaxSize(modifiedBy, 100, "modified_by").Message("修改人最长为100字符")
 	valid.MaxSize(name, 100, "name").Message("名称最长为100字符")
 
-	code := e.INVALID_PARAMS
+	err := errno.ErrValidation
 	if !valid.HasErrors() {
-		code = e.SUCCESS
+		err = errno.OK
 		if models.ExistTagByID(id) {
 			data := make(map[string]interface{})
 			data["modified_by"] = modifiedBy
@@ -110,7 +103,7 @@ func EditTag(c *gin.Context) {
 
 			models.EditTag(id, data)
 		} else {
-			code = e.ERROR_NOT_EXIST_TAG
+			err = errno.ErrTagExist
 		}
 	} else {
 		for _, err := range valid.Errors {
@@ -118,11 +111,7 @@ func EditTag(c *gin.Context) {
 		}
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"code": code,
-		"msg":  e.GetMsg(code),
-		"data": make(map[string]string),
-	})
+	SendResponse(c, err, make(map[string]string))
 }
 
 //删除文章标签
@@ -132,13 +121,13 @@ func DeleteTag(c *gin.Context) {
 	valid := validation.Validation{}
 	valid.Min(id, 1, "id").Message("ID必须大于0")
 
-	code := e.INVALID_PARAMS
+	err := errno.ErrValidation
 	if !valid.HasErrors() {
-		code = e.SUCCESS
+		err = errno.OK
 		if models.ExistTagByID(id) {
 			models.DeleteTag(id)
 		} else {
-			code = e.ERROR_NOT_EXIST_TAG
+			err = errno.ErrTagNotExist
 		}
 	} else {
 		for _, err := range valid.Errors {
@@ -146,9 +135,5 @@ func DeleteTag(c *gin.Context) {
 		}
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"code": code,
-		"msg":  e.GetMsg(code),
-		"data": make(map[string]string),
-	})
+	SendResponse(c, err, make(map[string]string))
 }
