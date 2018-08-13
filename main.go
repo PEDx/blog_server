@@ -1,7 +1,7 @@
 package main
 
 import (
-	"blog_server/commom/setting"
+	"blog_server/pkg/setting"
 	"blog_server/routers"
 	"fmt"
 	"net/http"

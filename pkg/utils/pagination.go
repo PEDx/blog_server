@@ -1,7 +1,7 @@
 package utils
 
 import (
-	"blog_server/commom/setting"
+	"blog_server/pkg/setting"
 
 	"github.com/Unknwon/com"
 	"github.com/gin-gonic/gin"

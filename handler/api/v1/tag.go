@@ -1,10 +1,10 @@
 package v1
 
 import (
-	"blog_server/commom/e"
-	"blog_server/commom/setting"
-	"blog_server/commom/utils"
 	"blog_server/models"
+	"blog_server/pkg/e"
+	"blog_server/pkg/setting"
+	"blog_server/pkg/utils"
 	"net/http"
 
 	"github.com/Unknwon/com"

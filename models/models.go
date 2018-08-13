@@ -1,7 +1,7 @@
 package models
 
 import (
-	"blog_server/commom/setting"
+	"blog_server/pkg/setting"
 	"fmt"
 
 	"github.com/jinzhu/gorm"
