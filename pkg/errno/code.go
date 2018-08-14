@@ -9,6 +9,7 @@ var (
 	ErrValidation = &Errno{Code: 20001, Message: "参数错误."}
 	ErrDatabase   = &Errno{Code: 20002, Message: "数据库错误"}
 	ErrToken      = &Errno{Code: 20003, Message: "token 错误."}
+	ErrEncrypt    = &Errno{Code: 20004, Message: "加密错误."}
 
 	// user errors
 	ErrUser         = &Errno{Code: 20101, Message: "用户错误"}

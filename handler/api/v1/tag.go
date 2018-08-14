@@ -1,7 +1,7 @@
 package v1
 
 import (
-	. "blog_server/handler"
+	"blog_server/handler"
 	"blog_server/models"
 	"blog_server/pkg/errno"
 	"blog_server/pkg/setting"
@@ -13,7 +13,7 @@ import (
 	"github.com/lexkong/log"
 )
 
-//获取多个文章标签
+//GetTags 获取多个文章标签
 func GetTags(c *gin.Context) {
 	name := c.Query("name")
 
@@ -24,7 +24,7 @@ func GetTags(c *gin.Context) {
 		maps["name"] = name
 	}
 
-	var state int = -1
+	state := -1
 	if arg := c.Query("state"); arg != "" {
 		state = com.StrTo(arg).MustInt()
 		maps["state"] = state
@@ -35,10 +35,10 @@ func GetTags(c *gin.Context) {
 	data["lists"] = models.GetTags(utils.GetPage(c), setting.PageSize, maps)
 	data["total"] = models.GetTagTotal(maps)
 
-	SendResponse(c, err, data)
+	handler.SendResponse(c, err, data)
 }
 
-//新增文章标签
+//AddTag 新增文章标签
 func AddTag(c *gin.Context) {
 	name := c.Query("name")
 	state := com.StrTo(c.DefaultQuery("state", "0")).MustInt()
@@ -62,14 +62,14 @@ func AddTag(c *gin.Context) {
 		}
 	} else {
 		for _, e := range valid.Errors {
-			log.Infof(e.Key, e.Message)
+			log.Infof(e.Message)
 		}
 	}
 
-	SendResponse(c, err, make(map[string]string))
+	handler.SendResponse(c, err, make(map[string]string))
 }
 
-//修改文章标签
+//EditTag 修改文章标签
 func EditTag(c *gin.Context) {
 	id := com.StrTo(c.Param("id")).MustInt()
 	name := c.Query("name")
@@ -77,7 +77,7 @@ func EditTag(c *gin.Context) {
 
 	valid := validation.Validation{}
 
-	var state int = -1
+	state := -1
 	if arg := c.Query("state"); arg != "" {
 		state = com.StrTo(arg).MustInt()
 		valid.Range(state, 0, 1, "state").Message("状态只允许0或1")
@@ -107,14 +107,14 @@ func EditTag(c *gin.Context) {
 		}
 	} else {
 		for _, err := range valid.Errors {
-			log.Infof(err.Key, err.Message)
+			log.Infof(err.Message)
 		}
 	}
 
-	SendResponse(c, err, make(map[string]string))
+	handler.SendResponse(c, err, make(map[string]string))
 }
 
-//删除文章标签
+//DeleteTag 删除文章标签
 func DeleteTag(c *gin.Context) {
 	id := com.StrTo(c.Param("id")).MustInt()
 
@@ -131,9 +131,9 @@ func DeleteTag(c *gin.Context) {
 		}
 	} else {
 		for _, err := range valid.Errors {
-			log.Infof(err.Key, err.Message)
+			log.Infof(err.Message)
 		}
 	}
 
-	SendResponse(c, err, make(map[string]string))
+	handler.SendResponse(c, err, make(map[string]string))
 }

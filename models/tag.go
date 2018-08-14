@@ -6,7 +6,7 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-type Tag struct {
+type TagModel struct {
 	Model
 
 	Name       string `json:"name"`
@@ -15,32 +15,46 @@ type Tag struct {
 	State      int    `json:"state"`
 }
 
-func (tag *Tag) BeforeCreate(scope *gorm.Scope) error {
+type GetTagRes struct {
+	ID    int    `json:"id"`
+	Name  string `json:"name"`
+	State string `json:"state"`
+}
+
+func (c *TagModel) TableName() string {
+	return "blog_tag"
+}
+
+func (c *GetTagRes) TableName() string {
+	return "blog_tag"
+}
+
+func (tag *TagModel) BeforeCreate(scope *gorm.Scope) error {
 	scope.SetColumn("CreatedOn", time.Now().Unix())
 
 	return nil
 }
 
-func (tag *Tag) BeforeUpdate(scope *gorm.Scope) error {
+func (tag *TagModel) BeforeUpdate(scope *gorm.Scope) error {
 	scope.SetColumn("ModifiedOn", time.Now().Unix())
 
 	return nil
 }
 
-func GetTags(pageNum int, pageSize int, maps interface{}) (tags []Tag) {
+func GetTags(pageNum int, pageSize int, maps interface{}) (tags []GetTagRes) {
 	db.Where(maps).Offset(pageNum).Limit(pageSize).Find(&tags)
 
 	return
 }
 
 func GetTagTotal(maps interface{}) (count int) {
-	db.Model(&Tag{}).Where(maps).Count(&count)
+	db.Model(&TagModel{}).Where(maps).Count(&count)
 
 	return
 }
 
 func ExistTagByName(name string) bool {
-	var tag Tag
+	var tag TagModel
 	db.Select("id").Where("name = ?", name).First(&tag)
 	if tag.ID > 0 {
 		return true
@@ -50,7 +64,7 @@ func ExistTagByName(name string) bool {
 }
 
 func ExistTagByID(id int) bool {
-	var tag Tag
+	var tag TagModel
 	db.Select("id").Where("id = ?", id).First(&tag)
 	if tag.ID > 0 {
 		return true
@@ -60,7 +74,7 @@ func ExistTagByID(id int) bool {
 }
 
 func AddTag(name string, state int, createdBy string) bool {
-	db.Create(&Tag{
+	db.Create(&TagModel{
 		Name:      name,
 		State:     state,
 		CreatedBy: createdBy,
@@ -70,13 +84,13 @@ func AddTag(name string, state int, createdBy string) bool {
 }
 
 func DeleteTag(id int) bool {
-	db.Where("id = ?", id).Delete(&Tag{})
+	db.Where("id = ?", id).Delete(&TagModel{})
 
 	return true
 }
 
 func EditTag(id int, data interface{}) bool {
-	db.Model(&Tag{}).Where("id = ?", id).Updates(data)
+	db.Model(&TagModel{}).Where("id = ?", id).Updates(data)
 
 	return true
 }

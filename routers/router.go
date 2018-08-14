@@ -28,8 +28,16 @@ func InitRouter() *gin.Engine {
 		//删除指定标签
 		apiv1.DELETE("/tags/:id", v1.DeleteTag)
 
+		// 用户列表
+		apiv1.GET("/user", v1.GetUserList)
+		// 用户
+		apiv1.GET("/user/:id", v1.GetUser)
 		// 添加用户
 		apiv1.POST("/user", v1.AddUser)
+		// 编辑用户
+		apiv1.PUT("/user/:id", v1.EditUser)
+		// 删除用户
+		apiv1.DELETE("/user/:id", v1.DeleteUser)
 	}
 
 	return r
