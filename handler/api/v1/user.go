@@ -15,6 +15,12 @@ import (
 )
 
 // GetUser 获取用户信息
+// @Summary 获取用户信息
+// @Tags user
+// @Produce  json
+// @Param id query int true "ID"
+// @Success 200 {string} handler.Response "{"code":200,"data":{},"msg":"ok"}"
+// @Router /user [get]
 func GetUser(c *gin.Context) {
 	id := com.StrTo(c.Query("id")).MustInt()
 
@@ -49,6 +55,13 @@ func GetUserList(c *gin.Context) {
 }
 
 // AddUser 添加用户
+// @Summary 添加用户
+// @Tags user
+// @Accept  json
+// @Produce  json
+// @Param body body models.CreateRequest true "添加用户"
+// @Success 200 {object} models.GetUserRespons "{"code":200,"data":{},"msg":"ok"}"
+// @Router /user [post]
 func AddUser(c *gin.Context) {
 	log.Info("User Create function called.")
 	var r models.CreateRequest
@@ -97,6 +110,13 @@ func AddUser(c *gin.Context) {
 }
 
 // EditUser 编辑用户
+// @Summary 编辑用户
+// @Tags user
+// @Accept  json
+// @Produce  json
+// @Param body body models.CreateRequest true "编辑用户"
+// @Success 200 {string} null "{"code":200,"data":{},"msg":"ok"}"
+// @Router /user/:id [put]
 func EditUser(c *gin.Context) {
 	var r models.CreateRequest
 
@@ -148,6 +168,12 @@ func EditUser(c *gin.Context) {
 }
 
 // DeleteUser 删除用户
+// @Summary 删除用户
+// @Tags user
+// @Param id path int true "id"
+// @Produce  json
+// @Success 200 {string} handler.Response "{"code":200,"data":{},"msg":"ok"}"
+// @Router /user/:id [delete]
 func DeleteUser(c *gin.Context) {
 	id := com.StrTo(c.Param("id")).MustInt()
 

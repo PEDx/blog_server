@@ -1,0 +1,136 @@
+definitions:
+  handler.Response:
+    properties:
+      code:
+        type: integer
+      data:
+        type: object
+      msg:
+        type: string
+    type: object
+  models.CreateRequest:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  models.GetUserRespons:
+    properties:
+      created_on:
+        type: integer
+      id:
+        type: integer
+      modified_on:
+        type: integer
+      username:
+        type: string
+    type: object
+info:
+  contact: {}
+  license: {}
+paths:
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: Login
+      parameters:
+      - description: 登录
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateRequest'
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code":0,"message":"OK","data":{"token":"234rqwr3rfaf"}}'
+          schema:
+            $ref: '#/definitions/handler.Response'
+            type: object
+      summary: 登录
+      tags:
+      - user
+  /user:
+    get:
+      parameters:
+      - description: ID
+        in: query
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code":200,"data":{},"msg":"ok"}'
+          schema:
+            type: string
+      summary: 获取用户信息
+      tags:
+      - user
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 添加用户
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateRequest'
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code":200,"data":{},"msg":"ok"}'
+          schema:
+            $ref: '#/definitions/models.GetUserRespons'
+            type: object
+      summary: 添加用户
+      tags:
+      - user
+  /user/:
+    delete:
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code":200,"data":{},"msg":"ok"}'
+          schema:
+            type: string
+      summary: 删除用户
+      tags:
+      - user
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: 编辑用户
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateRequest'
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code":200,"data":{},"msg":"ok"}'
+          schema:
+            type: "null"
+      summary: 编辑用户
+      tags:
+      - user
+swagger: "2.0"

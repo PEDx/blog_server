@@ -1,11 +1,14 @@
 package routers
 
 import (
+	_ "blog_server/docs"
 	"blog_server/handler/api/v1"
 	"blog_server/middleware"
 	"blog_server/pkg/setting"
 
 	"github.com/gin-gonic/gin"
+	"github.com/swaggo/gin-swagger"
+	"github.com/swaggo/gin-swagger/swaggerFiles"
 )
 
 func InitRouter() *gin.Engine {
@@ -22,6 +25,7 @@ func InitRouter() *gin.Engine {
 	apiv1 := r.Group("/api/v1")
 
 	// 用户登录
+	apiv1.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	apiv1.POST("/login", v1.Login)
 
 	apiv1.Use(middleware.AuthMiddleware())

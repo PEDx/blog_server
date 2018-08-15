@@ -12,6 +12,15 @@ import (
 	"github.com/lexkong/log"
 )
 
+// Login 登录
+// @Summary  登录
+// @Description Login
+// @Tags user
+// @Accept  json
+// @Produce  json
+// @Param body body models.CreateRequest true "登录"
+// @Success 200 {object} handler.Response "{"code":0,"message":"OK","data":{"token":"234rqwr3rfaf"}}"
+// @Router /login [post]
 func Login(c *gin.Context) {
 	var r models.CreateRequest
 	data := make(map[string]interface{})
