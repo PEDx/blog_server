@@ -117,6 +117,22 @@
 			"revisionTime": "2018-07-27T09:20:40Z"
 		},
 		{
+			"checksumSHA1": "shTCYnhVnwNkeP2bpqb1FOIIyNA=",
+			"path": "github.com/willf/pad",
+			"revision": "b3d7806010228b1a954b4d9c4ee4cf6cb476b063",
+			"revisionTime": "2016-03-31T13:10:08Z"
+		},
+		{
+			"checksumSHA1": "oCH3J96RWvO8W4xjix47PModpio=",
+			"path": "golang.org/x/crypto/bcrypt",
+			"revision": ""
+		},
+		{
+			"checksumSHA1": "oVPHWesOmZ02vLq2fglGvf+AMgk=",
+			"path": "golang.org/x/crypto/blowfish",
+			"revision": ""
+		},
+		{
 			"checksumSHA1": "P/k5ZGf0lEBgpKgkwy++F7K1PSg=",
 			"path": "gopkg.in/go-playground/validator.v8",
 			"revision": "5f1438d3fca68893a817e4a66806cea46a9e4ebf",

@@ -2,6 +2,7 @@ package routers
 
 import (
 	"blog_server/handler/api/v1"
+	"blog_server/middleware"
 	"blog_server/pkg/setting"
 
 	"github.com/gin-gonic/gin"
@@ -29,7 +30,7 @@ func InitRouter() *gin.Engine {
 		apiv1.DELETE("/tag/:id", v1.DeleteTag)
 
 		// 用户列表
-		apiv1.GET("/user/:username", v1.GetUserList)
+		apiv1.GET("/user/:username", middleware.Secure, v1.GetUserList)
 		// 用户
 		apiv1.GET("/user", v1.GetUser)
 		// 添加用户
