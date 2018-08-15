@@ -66,6 +66,12 @@ func GetUserById(id int) (GetUserRespons, error) {
 	return u, d.Error
 }
 
+func GetUserByName(name string) (UserModel, error) {
+	var u UserModel
+	d := db.Where("username = ?", name).First(&u)
+	return u, d.Error
+}
+
 func DeleteUserById(id int) error {
 	user := UserModel{}
 	user.Model.ID = id

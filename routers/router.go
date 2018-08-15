@@ -13,12 +13,18 @@ func InitRouter() *gin.Engine {
 
 	r.Use(gin.Logger())
 
+	r.Use(middleware.Logging())
+
 	r.Use(gin.Recovery())
 
 	gin.SetMode(setting.RunMode)
 
 	apiv1 := r.Group("/api/v1")
 
+	// 用户登录
+	apiv1.POST("/login", v1.Login)
+
+	apiv1.Use(middleware.AuthMiddleware())
 	{
 		//获取标签列表
 		apiv1.GET("/tag", v1.GetTags)
