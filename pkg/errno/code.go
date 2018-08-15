@@ -14,6 +14,7 @@ var (
 	// user errors
 	ErrUser         = &Errno{Code: 20101, Message: "用户错误"}
 	ErrUserNotFound = &Errno{Code: 20102, Message: "用户未找到"}
+	ErrUserUpdate   = &Errno{Code: 20103, Message: "编辑用户出错"}
 	// tag errors
 	ErrTag         = &Errno{Code: 20201, Message: "tag 错误"}
 	ErrTagExist    = &Errno{Code: 20202, Message: "tag 已经存在"}

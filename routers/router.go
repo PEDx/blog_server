@@ -20,18 +20,18 @@ func InitRouter() *gin.Engine {
 
 	{
 		//获取标签列表
-		apiv1.GET("/tags", v1.GetTags)
+		apiv1.GET("/tag", v1.GetTags)
 		//新建标签
-		apiv1.POST("/tags", v1.AddTag)
+		apiv1.POST("/tag", v1.AddTag)
 		//更新指定标签
-		apiv1.PUT("/tags/:id", v1.EditTag)
+		apiv1.PUT("/tag/:id", v1.EditTag)
 		//删除指定标签
-		apiv1.DELETE("/tags/:id", v1.DeleteTag)
+		apiv1.DELETE("/tag/:id", v1.DeleteTag)
 
 		// 用户列表
-		apiv1.GET("/user", v1.GetUserList)
+		apiv1.GET("/user/:username", v1.GetUserList)
 		// 用户
-		apiv1.GET("/user/:id", v1.GetUser)
+		apiv1.GET("/user", v1.GetUser)
 		// 添加用户
 		apiv1.POST("/user", v1.AddUser)
 		// 编辑用户
