@@ -1,32 +1,32 @@
-.index .logo {
+#index .logo {
   height: 40px;
   margin-top: 10px; }
 
-.index > header {
+#index > header {
   background-color: rgba(0, 0, 0, 0.8);
   height: 60px;
   line-height: 60px;
   font-size: 14px;
-  display: flex; }
+  display: flex;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1); }
+  #index > header > ul {
+    height: 60px;
+    line-height: 60px;
+    margin: 0 auto; }
+    #index > header > ul li {
+      display: inline-block;
+      margin-right: 20px; }
 
-.index .logo-box {
+#index .logo_box {
   height: 60px;
   line-height: 60px; }
 
-.index .login {
+#index .login {
   width: 60px; }
-  .index .login a {
+  #index .login a {
     padding: 10px; }
 
-.index ul {
-  height: 60px;
-  line-height: 60px;
-  margin: 0 auto; }
-  .index ul li {
-    display: inline-block;
-    margin-right: 20px; }
-
-.index a {
+#index a {
   color: #9C9C9C; }
-  .index a:hover {
+  #index a:hover {
     color: #fff; }

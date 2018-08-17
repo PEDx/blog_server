@@ -1,0 +1,35 @@
+#login {
+  width: 100%;
+  padding-top: 100px;
+  .ct_box {
+    width: 500px;
+    height: 400px;
+    margin: 0 auto;
+    text-align: center;
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .1);
+    border-radius: 5px;
+    .nav {
+      border-bottom: 1px solid #666;
+      font-size: 16px;
+      ul {
+        display: flex;
+        li {
+          flex: 1;
+          height: 45px;
+          line-height: 45px;
+          cursor: pointer;
+          background-color: rgba(0, 0, 0, 0.8);
+          color: #fff;
+          border-radius: 5px 0 0 0;
+          &:hover {
+            color: #9c9c9c;
+            background-color: #fff;
+          }
+        }
+        li:last-child {
+          border-radius: 0 5px 0 0;
+        }
+      }
+    }
+  }
+}

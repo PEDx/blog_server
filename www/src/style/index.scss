@@ -1,4 +1,4 @@
-.index {
+#index {
   .logo {
     height: 40px;
     margin-top: 10px;
@@ -9,8 +9,18 @@
     line-height: 60px;
     font-size: 14px;
     display: flex;
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .1);
+    &>ul {
+      height: 60px;
+      line-height: 60px;
+      margin: 0 auto;
+      li {
+        display: inline-block;
+        margin-right: 20px;
+      }
+    }
   }
-  .logo-box {
+  .logo_box {
     height: 60px;
     line-height: 60px;
   }
@@ -18,15 +28,6 @@
     width: 60px;
     a {
       padding: 10px;
-    }
-  }
-  ul {
-    height: 60px;
-    line-height: 60px;
-    margin: 0 auto;
-    li {
-      display: inline-block;
-      margin-right: 20px;
     }
   }
   a {
