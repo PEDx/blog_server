@@ -2,7 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e33f2a80-8900-4a7d-928c-4937b2934a03" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/routers/router.go" beforeDir="false" afterPath="$PROJECT_DIR$/routers/router.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/www/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/www/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/www/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/www/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/www/src/App.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/www/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/www/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/www/src/App.test.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/www/src/index.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/www/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/www/src/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/www/src/logo.svg" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -82,8 +89,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file:///usr/local/go/src/net/http/server.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="580">
-              <caret line="2528" column="35" lean-forward="true" selection-start-line="2528" selection-start-column="35" selection-end-line="2528" selection-end-column="35" />
+            <state relative-caret-position="145">
+              <caret line="2499" column="21" selection-start-line="2499" selection-start-column="21" selection-end-line="2499" selection-end-column="21" />
             </state>
           </provider>
         </entry>
@@ -108,6 +115,14 @@
   <component name="JsGulpfileManager">
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="NodeModulesDirectoryManager">
+    <handled-path value="$PROJECT_DIR$/www/node_modules" />
+  </component>
+  <component name="NodePackageJsonFileManager">
+    <packageJsonPaths>
+      <path value="$PROJECT_DIR$/www/package.json" />
+    </packageJsonPaths>
   </component>
   <component name="ProjectFrameBounds">
     <option name="y" value="22" />
@@ -239,8 +254,8 @@
     </entry>
     <entry file="file:///usr/local/go/src/net/http/server.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="580">
-          <caret line="2528" column="35" lean-forward="true" selection-start-line="2528" selection-start-column="35" selection-end-line="2528" selection-end-column="35" />
+        <state relative-caret-position="145">
+          <caret line="2499" column="21" selection-start-line="2499" selection-start-column="21" selection-end-line="2499" selection-end-column="21" />
         </state>
       </provider>
     </entry>

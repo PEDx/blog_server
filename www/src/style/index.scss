@@ -1,0 +1,38 @@
+.index {
+  .logo {
+    height: 40px;
+    margin-top: 10px;
+  }
+  &>header {
+    background-color: rgba(0, 0, 0, 0.8);
+    height: 60px;
+    line-height: 60px;
+    font-size: 14px;
+    display: flex;
+  }
+  .logo-box {
+    height: 60px;
+    line-height: 60px;
+  }
+  .login {
+    width: 60px;
+    a {
+      padding: 10px;
+    }
+  }
+  ul {
+    height: 60px;
+    line-height: 60px;
+    margin: 0 auto;
+    li {
+      display: inline-block;
+      margin-right: 20px;
+    }
+  }
+  a {
+    color: #9C9C9C;
+    &:hover {
+      color: #fff;
+    }
+  }
+}

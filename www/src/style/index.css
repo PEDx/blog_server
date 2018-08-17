@@ -1,0 +1,32 @@
+.index .logo {
+  height: 40px;
+  margin-top: 10px; }
+
+.index > header {
+  background-color: rgba(0, 0, 0, 0.8);
+  height: 60px;
+  line-height: 60px;
+  font-size: 14px;
+  display: flex; }
+
+.index .logo-box {
+  height: 60px;
+  line-height: 60px; }
+
+.index .login {
+  width: 60px; }
+  .index .login a {
+    padding: 10px; }
+
+.index ul {
+  height: 60px;
+  line-height: 60px;
+  margin: 0 auto; }
+  .index ul li {
+    display: inline-block;
+    margin-right: 20px; }
+
+.index a {
+  color: #9C9C9C; }
+  .index a:hover {
+    color: #fff; }
