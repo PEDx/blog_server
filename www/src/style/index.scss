@@ -1,13 +1,16 @@
+@import "./color.scss";
+
 #index {
   .logo {
     height: 40px;
     margin-top: 10px;
   }
   &>header {
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: $blue_dark;
     height: 60px;
     line-height: 60px;
-    font-size: 14px;
+    font-size: 0.75rem;
+    font-weight: bold;
     display: flex;
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .1);
     &>ul {
@@ -33,7 +36,7 @@
   a {
     color: #9C9C9C;
     &:hover {
-      color: #fff;
+      color: $white_sky;
     }
   }
 }

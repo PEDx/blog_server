@@ -1,3 +1,4 @@
+@import "./color.scss";
 #login {
   width: 100%;
   padding-top: 100px;
@@ -18,7 +19,7 @@
           height: 45px;
           line-height: 45px;
           cursor: pointer;
-          background-color: rgba(0, 0, 0, 0.8);
+          background-color: $blue_dark;
           color: #fff;
           border-radius: 5px 0 0 0;
           &:hover {

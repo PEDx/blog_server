@@ -1,13 +1,12 @@
 /* function */
 
-.f-cb:after,
-.f-cbli li:after {
+.f-cb: after, .f-cbli li: after {
   display: block;
   clear: both;
   visibility: hidden;
   height: 0;
   overflow: hidden;
-  content: ".";
+  content: '.';
 }
 
 .f-cb,
@@ -55,7 +54,7 @@
 }
 
 .f-ff1 {
-  font-family: "Microsoft YaHei", \5fae\8f6f\96c5\9ed1, arial, \5b8b\4f53;
+  font-family: 'Microsoft YaHei', \5fae\8f6f\96c5\9ed1, arial, \5b8b\4f53;
 }
 
 .f-fs1 {
@@ -344,6 +343,11 @@ a:hover {
 }
 
 html {
-  font-family: "PingFangSC-Regular", "PingFang SC", "Microsoft YaHei", Arial, Helvetica, "WenQuanYi Micro Hei", "tohoma,sans-serif";
-  ;
+  font-family: 'PingFangSC-Regular', 'PingFang SC', 'Microsoft YaHei', Arial,
+    Helvetica, 'WenQuanYi Micro Hei', 'tohoma,sans-serif';
+  font-size: 20px;
+  color: #ffffff;
+  letter-spacing: 0;
+  line-height: 20px;
+  -webkit-font-smoothing: antialiased;
 }
