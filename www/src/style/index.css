@@ -6,7 +6,6 @@
   background-color: #022d5a;
   height: 60px;
   line-height: 60px;
-  font-size: 0.75rem;
   font-weight: bold;
   display: flex;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1); }
@@ -15,19 +14,82 @@
     line-height: 60px;
     margin: 0 auto; }
     #index > header > ul li {
+      font-size: 0.75rem;
       display: inline-block;
       margin-right: 20px; }
 
 #index .logo_box {
   height: 60px;
-  line-height: 60px; }
+  line-height: 60px;
+  margin-left: 40px; }
 
 #index .login {
-  width: 60px; }
-  #index .login a {
-    padding: 10px; }
+  font-size: 0.75rem;
+  text-align: center; }
 
 #index a {
   color: #9C9C9C; }
   #index a:hover {
     color: #d1dbe7; }
+
+#index .user {
+  position: relative;
+  height: 60px;
+  line-height: 60px;
+  padding-right: 40px;
+  width: 60px; }
+  #index .user:hover ul {
+    display: block; }
+  #index .user .user_logo {
+    width: 34px;
+    height: 34px;
+    line-height: 34px;
+    border-radius: 17px;
+    background-color: #ebeef5;
+    text-align: center;
+    margin: 0 auto;
+    margin-top: 12px;
+    cursor: pointer;
+    text-align: center; }
+    #index .user .user_logo img {
+      position: relative;
+      top: 2px;
+      border-radius: 15px;
+      width: 30px;
+      height: 30px; }
+  #index .user .dropdown_menu {
+    display: none;
+    position: absolute;
+    top: 55px;
+    left: -20px;
+    z-index: 10;
+    padding: 10px 0;
+    margin: 5px 0;
+    background-color: #fff;
+    border: 1px solid #ebeef5;
+    border-radius: 4px;
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+    font-size: 14px; }
+    #index .user .dropdown_menu li {
+      width: 100px;
+      height: 40px;
+      line-height: 40px;
+      text-align: center;
+      cursor: pointer; }
+      #index .user .dropdown_menu li:hover {
+        background-color: #d1dbe7; }
+    #index .user .dropdown_menu:before {
+      content: "";
+      display: block;
+      width: 0;
+      height: 0;
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-bottom: 6px solid #fff;
+      position: absolute;
+      left: 50%;
+      top: -6px;
+      transform: translate(-50%, 0);
+      -webkit-transform: translate(-50%, 0);
+      -ms-transform: translate(-50%, 0);
+      -o-transform: translate(-50%, 0); }

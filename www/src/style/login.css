@@ -1,16 +1,19 @@
 #login {
+  height: 100%;
   width: 100%;
   padding-top: 100px; }
   #login .ct_box {
+    position: relative;
     width: 500px;
     height: 400px;
     margin: 0 auto;
     text-align: center;
-    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 12px 0 #0000001a;
+    background-color: #fff;
     border-radius: 5px; }
     #login .ct_box .nav {
-      border-bottom: 1px solid #666;
-      font-size: 16px; }
+      font-size: 16px;
+      margin-bottom: 30px; }
       #login .ct_box .nav ul {
         display: flex; }
         #login .ct_box .nav ul li {
@@ -21,8 +24,22 @@
           background-color: #022d5a;
           color: #fff;
           border-radius: 5px 0 0 0; }
-          #login .ct_box .nav ul li:hover {
-            color: #9c9c9c;
-            background-color: #fff; }
         #login .ct_box .nav ul li:last-child {
-          border-radius: 0 5px 0 0; }
+          border-radius: 0 5px 0 0;
+          margin-left: 5px; }
+        #login .ct_box .nav ul .active {
+          color: #333;
+          background-color: #fff; }
+    #login .ct_box .form_item {
+      width: 300px;
+      margin: 0 auto;
+      margin-bottom: 20px; }
+    #login .ct_box .confirm {
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      margin-left: -150px; }
+      #login .ct_box .confirm button {
+        width: 300px;
+        background-color: #022d5a;
+        color: #fff; }
