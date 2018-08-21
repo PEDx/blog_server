@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import { Input, Button } from 'antd';
 import style from "../style/login.css"
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -27,7 +29,9 @@ class App extends Component {
   handleInput(type, event) {
     this.setState({ [type]: event.target.value })
   }
-
+  componentDidMount() {
+    this.input.focus()
+  }
   render() {
     const { username, password, confirmPwd, email } = this.state
     return (
@@ -40,22 +44,22 @@ class App extends Component {
             </ul>
           </div>
           <div className={style.form}>
-            {this.state.tabName === "register" ?
+            {this.state.tabName === "register" &&
               (<div className={style.form_item}>
-                <input type="email" name="email" id="email" value={email} placeholder="邮箱" onChange={this.handleInput.bind(this, 'email')} />
-              </div>) : ""}
+                <Input type="email" name="email" id="email" value={email} placeholder="邮箱" onChange={this.handleInput.bind(this, 'email')} />
+              </div>)}
             <div className={style.form_item}>
-              <input type="text" name="username" id="username" value={username} placeholder="用户名" onChange={this.handleInput.bind(this, 'username')} />
+              <Input type="text" name="username" id="username" value={username} placeholder="用户名" ref={(input) => this.input = input} onChange={this.handleInput.bind(this, 'username')} />
             </div>
             <div className={style.form_item}>
-              <input type="password" name="password" id="password" value={password} placeholder="密码" onChange={this.handleInput.bind(this, 'password')} />
+              <Input type="password" name="password" id="password" value={password} placeholder="密码" onChange={this.handleInput.bind(this, 'password')} />
             </div>
-            {this.state.tabName === "register" ?
+            {this.state.tabName === "register" &&
               (<div className={style.form_item}>
-                <input type="password" name="confirmPwd" id="confirmPwd" value={confirmPwd} placeholder="确认密码" onChange={this.handleInput.bind(this, 'confirmPwd')} />
-              </div>) : ""}
+                <Input type="password" name="confirmPwd" id="confirmPwd" value={confirmPwd} placeholder="确认密码" onChange={this.handleInput.bind(this, 'confirmPwd')} />
+              </div>)}
             <div className={style.confirm}>
-              <button className="btn" onClick={this.handleConfirm.bind(this)}>确定</button>
+              <Button className="btn" onClick={this.handleConfirm.bind(this)}>确定</Button>
             </div>
           </div>
         </div>

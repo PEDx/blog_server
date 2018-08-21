@@ -2,7 +2,6 @@
 #index {
   .logo {
     height: 40px;
-    margin-top: 10px;
   }
   &>header {
     background-color: $blue_dark;
@@ -41,7 +40,7 @@
     position: relative;
     height: 60px;
     line-height: 60px;
-    padding-right: 40px;
+    margin-right: 40px;
     width: 60px;
     &:hover ul {
       display: block;
@@ -59,7 +58,7 @@
       text-align: center;
       img {
         position: relative;
-        top: 2px;
+        top: -1px;
         border-radius: 15px;
         width: 30px;
         height: 30px;

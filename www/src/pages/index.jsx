@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link, Route, Switch } from "react-router-dom";
+import 'antd/lib/style/index.css';
 import asyncComponent from '../components/AsyncComponent'
 import logo from "../assets/logo.svg"
 import style from "../style/index.css"
@@ -37,11 +38,11 @@ class App extends Component {
             <li><Link to="/user">论坛</Link></li>
           </ul>
           <div className={style.user}>
-            {!this.state.userLogo ? (<div className={style.login}>
+            {!this.state.userLogo && (<div className={style.login}>
               <Link to="/login">登录</Link>
-            </div>) : ""}
+            </div>)}
             {/* <div className="message"></div> */}
-            {this.state.userLogo ? (<div className={style.user_logo} >
+            {this.state.userLogo && (<div className={style.user_logo} >
               <img src={this.state.userLogo} alt="logo" />
               <ul className={style.dropdown_menu}>
                 <li>个人中心</li>
@@ -49,7 +50,7 @@ class App extends Component {
                 <li>设置</li>
                 <li onClick={this.handleLogout.bind(this)}>登出</li>
               </ul>
-            </div>) : ""}
+            </div>)}
           </div>
         </header>
         <div>

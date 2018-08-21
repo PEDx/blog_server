@@ -1,7 +1,5 @@
-/* function */
-
-.f-cb: after,
-.f-cbli li: after {
+.f-cb:after,
+.f-cbli li:after {
   display: block;
   clear: both;
   visibility: hidden;
@@ -48,14 +46,6 @@
 
 .f-oh {
   overflow: hidden;
-}
-
-.f-ff0 {
-  font-family: arial, \5b8b\4f53;
-}
-
-.f-ff1 {
-  font-family: 'Microsoft YaHei', \5fae\8f6f\96c5\9ed1, arial, \5b8b\4f53;
 }
 
 .f-fs1 {
@@ -168,8 +158,6 @@
   -o-user-select: none;
   user-select: none;
 }
-
-/* reset */
 
 html,
 body,
@@ -329,7 +317,7 @@ button,
 select,
 keygen,
 legend {
-  font: 12px/1.14 arial, \5b8b\4f53;
+  font: 12px/1.14 arial;
   color: #333;
   outline: 0;
 }
@@ -350,54 +338,6 @@ html {
   letter-spacing: 0;
   line-height: 20px;
   -webkit-font-smoothing: antialiased;
-}
-
-input {
-  -webkit-appearance: none;
-  background-color: #fff;
-  background-image: none;
-  border-radius: 4px;
-  border: 1px solid #dcdfe6;
-  box-sizing: border-box;
-  color: #606266;
-  display: inline-block;
-  font-size: inherit;
-  height: 40px;
-  line-height: 40px;
-  outline: none;
-  padding: 0 15px;
-  transition: border-color .2s cubic-bezier(.645, .045, .355, 1);
-  width: 100%;
-}
-
-button {
-  display: inline-block;
-  line-height: 1;
-  white-space: nowrap;
-  cursor: pointer;
-  background: #fff;
-  border: 1px solid #dcdfe6;
-  border-color: #dcdfe6;
-  color: #606266;
-  -webkit-appearance: none;
-  text-align: center;
-  box-sizing: border-box;
-  outline: none;
-  margin: 0;
-  transition: .1s;
-  font-weight: 500;
-  -moz-user-select: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
-  padding: 12px 20px;
-  font-size: 14px;
-  border-radius: 4px;
-}
-
-button:active {
-  position: relative;
-  top: 1px;
-  background-color: #003c7c !important;
 }
 
 html,
