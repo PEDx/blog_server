@@ -1,40 +1,53 @@
-#index .logo {
-  height: 40px; }
-
-#index > header {
-  background-color: #022d5a;
-  height: 60px;
-  line-height: 60px;
-  font-weight: bold;
-  display: flex;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1); }
-  #index > header > ul {
+#index {
+  height: 100%;
+  padding-top: 60px; }
+  #index .logo {
+    height: 40px; }
+  #index > header {
+    position: fixed;
+    top: 0;
+    z-index: 99;
+    width: 100%;
+    background-color: #022d5a;
     height: 60px;
     line-height: 60px;
-    margin: 0 auto; }
-    #index > header > ul li {
-      font-size: 0.75rem;
+    font-weight: bold;
+    display: flex;
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1); }
+    #index > header > ul {
+      height: 60px;
+      line-height: 60px;
+      margin: 0 auto; }
+      #index > header > ul li {
+        font-size: 0.75rem;
+        display: inline-block;
+        margin-right: 20px; }
+    #index > header .badge {
       display: inline-block;
-      margin-right: 20px; }
-
-#index .logo_box {
-  height: 60px;
-  line-height: 60px;
-  margin-left: 40px; }
-
-#index .login {
-  font-size: 0.75rem;
-  text-align: center; }
-
-#index a {
-  color: #9C9C9C; }
-  #index a:hover {
-    color: #d1dbe7; }
-
-#index .user {
-  position: relative;
-  height: 60px;
-  line-height: 60px;
-  margin-right: 40px;
-  width: 60px;
-  text-align: center; }
+      position: relative;
+      top: -10px;
+      width: 16px;
+      height: 16px;
+      text-align: center;
+      border-radius: 8px;
+      line-height: 12px;
+      color: #fff;
+      background-color: #993955; }
+  #index .logo_box {
+    height: 60px;
+    line-height: 60px;
+    margin-left: 40px; }
+  #index .login {
+    font-size: 0.75rem;
+    text-align: center; }
+  #index a {
+    color: #9C9C9C; }
+    #index a:hover {
+      color: #d1dbe7; }
+  #index .user {
+    position: relative;
+    height: 60px;
+    line-height: 60px;
+    margin-right: 40px;
+    width: 60px;
+    text-align: center; }

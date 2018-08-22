@@ -1,0 +1,24 @@
+.blog_list {
+  position: relative;
+  max-width: 1000px;
+  min-width: 800px;
+  margin: 0 auto;
+  padding: 20px 0; }
+  .blog_list .archive {
+    position: fixed;
+    top: 10;
+    width: 80px;
+    z-index: 99;
+    background-color: #fff;
+    border-radius: 5px; }
+    .blog_list .archive li {
+      height: 40px;
+      line-height: 40px;
+      width: 100%;
+      border-radius: 5px;
+      font-size: 16px;
+      text-align: center;
+      cursor: pointer;
+      transition: all .6s; }
+      .blog_list .archive li:hover {
+        background-color: #d1dbe7; }

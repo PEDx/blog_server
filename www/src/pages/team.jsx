@@ -4,7 +4,7 @@ class App extends Component {
     return (
       <div className="user">
         <header className="app_sap">
-          <h1 className="app_sap_title">Welcome to user</h1>
+          <h1 className="app_sap_title">Welcome to team</h1>
         </header>
       </div>
     );

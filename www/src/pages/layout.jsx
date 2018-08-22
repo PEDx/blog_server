@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link, Route, Switch } from "react-router-dom";
+import { Link, Route, Switch, Redirect } from "react-router-dom";
 import { Avatar, Menu, Dropdown } from 'antd';
 import 'antd/lib/style/index.css';
 import asyncComponent from '../components/AsyncComponent'
@@ -11,19 +11,22 @@ import Home from "./home"
 
 const User = asyncComponent(() => import("./user"));
 const Login = asyncComponent(() => import("./login"));
+const Team = asyncComponent(() => import("./team"));
 const Blog = asyncComponent(() => import("./blog"));
+const DataLab = asyncComponent(() => import("./dataLab"));
+const Article = asyncComponent(() => import("./article"));
 
-const menu = function(){
+const menu = function () {
   return (
     <Menu >
       <Menu.Item>
-        <a target="_blank" rel="noopener noreferrer">个人中心</a>
+        <Link to="/user">个人中心</Link>
       </Menu.Item>
       <Menu.Item>
         <a target="_blank" rel="noopener noreferrer">控制台</a>
       </Menu.Item>
       <Menu.Item>
-        <a target="_blank" rel="noopener noreferrer">设置</a>
+        <a target="_blank" rel="noopener noreferrer">工具</a>
       </Menu.Item>
       <Menu.Item onClick={this.handleLogout.bind(this)}>
         <a target="_blank" rel="noopener noreferrer" >登出</a>
@@ -56,10 +59,9 @@ class App extends Component {
           </div>
           <ul>
             <li><Link to="/home">首页</Link></li>
-            <li><Link to="/news">新闻</Link></li>
             <li><Link to="/blog">博客</Link></li>
-            <li><Link to="/blog">商店</Link></li>
-            <li><Link to="/user">论坛</Link></li>
+            <li><Link to="/team">团队</Link></li>
+            <li><Link to="/dataLab">数据实验室<span className={style.badge}>α</span></Link></li>
           </ul>
           <div className={style.user}>
             {
@@ -79,12 +81,18 @@ class App extends Component {
             }
           </div>
         </header>
-        <div>
+        <div style={{
+          height: "100%",
+          overflow: "scroll"
+        }}>
           <Switch>
-            {/* <Route path="/" component={Home} /> */}
+            <Route exact path="/" render={() => (<Redirect to="/home" />)} />
             <Route path="/home" component={Home} />
             <Route path="/user" component={User} />
+            <Route path="/team" component={Team} />
+            <Route path="/dataLab" component={DataLab} />
             <Route path="/blog" component={Blog} />
+            <Route path="/article" component={Article} />
             <Route path="/login" component={Login} />
           </Switch>
         </div>
