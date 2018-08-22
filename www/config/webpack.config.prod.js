@@ -173,7 +173,7 @@ module.exports = {
           // in the main CSS file.
           {
             test: /\.css$/,
-            exclude: /node_modules|antd\.css/,
+            exclude: /node_modules|antd|main\.css/,
             loader: ExtractTextPlugin.extract(
               Object.assign(
                 {
@@ -222,7 +222,7 @@ module.exports = {
           },
           {
             test: /\.css$/,
-            include: /node_modules|antd\.css/,
+            include: /node_modules|antd|main\.css/,
             loader: ExtractTextPlugin.extract(
               Object.assign(
                 {

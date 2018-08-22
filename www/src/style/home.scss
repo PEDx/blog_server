@@ -1,0 +1,25 @@
+.item {
+  height: 600px; // width: 800px!important;
+  line-height: 600px; // background-color: aquamarine;
+  text-align: center;
+  h3 {
+    display: inline-block;
+    width: 93%;
+    height: 500px;
+    margin: 0 auto;
+    vertical-align: middle;
+    border-radius: 10px;
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .1);
+    cursor: pointer;
+
+    div {
+      width: 100%;
+      height: 100%;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    img {
+      width: 100%;
+    }
+  }
+}

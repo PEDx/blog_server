@@ -164,7 +164,7 @@ module.exports = {
           // in development "style" loader enables hot editing of CSS.
           {
             test: /\.css$/,
-            exclude: /node_modules|antd\.css/,
+            exclude: /node_modules|antd|main\.css/,
             use: [
               require.resolve('style-loader'),
               {
@@ -201,7 +201,7 @@ module.exports = {
           //
           {
             test: /\.css$/,
-            include: /node_modules|antd\.css/,
+            include: /node_modules|antd|main\.css/,
             use: [
               require.resolve('style-loader'),
               {
