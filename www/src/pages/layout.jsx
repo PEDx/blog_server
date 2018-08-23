@@ -15,6 +15,7 @@ const Team = asyncComponent(() => import("./team"));
 const Blog = asyncComponent(() => import("./blog"));
 const DataLab = asyncComponent(() => import("./dataLab"));
 const Article = asyncComponent(() => import("./article"));
+const Tools = asyncComponent(() => import("./tools"));
 
 const menu = function () {
   return (
@@ -26,10 +27,10 @@ const menu = function () {
         <a target="_blank" rel="noopener noreferrer">控制台</a>
       </Menu.Item>
       <Menu.Item>
-        <a target="_blank" rel="noopener noreferrer">工具</a>
+        <Link to="/tools">工具</Link>
       </Menu.Item>
       <Menu.Item onClick={this.handleLogout.bind(this)}>
-        <a target="_blank" rel="noopener noreferrer" >登出</a>
+        登出
       </Menu.Item>
     </Menu>
   );
@@ -92,6 +93,7 @@ class App extends Component {
             <Route path="/team" component={Team} />
             <Route path="/dataLab" component={DataLab} />
             <Route path="/blog" component={Blog} />
+            <Route path="/tools" component={Tools} />
             <Route path="/article" component={Article} />
             <Route path="/login" component={Login} />
           </Switch>
