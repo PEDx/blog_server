@@ -32,8 +32,6 @@ export default class Shadertoy {
   static imageTextureObj = {}
   // 帧缓冲纹理合集
   static framebufferTextureObj = {}
-  // 帧缓冲对象合集
-  static framebufferObj = {}
 
   constructor(canvas, main, buffers) {
     this.canvas = canvas;
@@ -46,14 +44,14 @@ export default class Shadertoy {
 
     let buffersDepTextureArr = []
     buffers.forEach(val => {
-      buffersDepTextureArr.concat(val.depTextureArr)
+      buffersDepTextureArr = buffersDepTextureArr.concat(val.depTextureArr)
     })
 
-    this.allImageTexturs = main.depTextureArr.concat(buffersDepTextureArr);
+    this.allTexturs = main.depTextureArr.concat(buffersDepTextureArr);
 
     this.initCanvas()
     this.initFramebuffer(buffers)
-    this.initProgram(main.fragmentStr, main.depTextureArr)
+    this.initProgram(main.fragmentStr, main.depTextureArr, buffers)
 
     window.addEventListener("keydown", (event) => {
       // 暂停
@@ -69,7 +67,7 @@ export default class Shadertoy {
   }
   init() {
     // 异步加载图片纹理
-    return Promise.all(this.allImageTexturs.map((val, idx) => {
+    return Promise.all(this.allTexturs.map((val, idx) => {
       return val.type === "image" && this.loadTexture(val, idx)
     }))
   }
@@ -77,7 +75,7 @@ export default class Shadertoy {
     buffers.forEach((val => {
       let tt = Shadertoy.createTargetTexture(this.gl, this.width, this.height)
       let fs = Shadertoy.createFramebuffers(this.gl, tt)
-      Shadertoy.framebufferObj[val.Id] = {
+      Shadertoy.framebufferTextureObj[val.Id] = {
         texture: tt,
         framebuffer: fs
       }
@@ -88,13 +86,14 @@ export default class Shadertoy {
     this.canvas.setAttribute('width', this.width);
     this.canvas.setAttribute('height', this.height);
   }
-  initProgram(fragmentShaderStr, depTextureArr) {
+  initProgram(fragmentStr, depTextureArr, buffers) {
     const gl = this.gl;
-    let fragmentShader = Shadertoy.genFragmentShader(fragmentShaderStr)
 
-    this.shader0 = new Shader(gl, vertexShader, fragmentShader);
-    this.shader0.textures = depTextureArr
-
+    this.shader0 = Shadertoy.ininShader(gl, buffers[0].fragmentStr, buffers[0].depTextureArr)
+    this.shader1 = Shadertoy.ininShader(gl, buffers[1].fragmentStr, buffers[1].depTextureArr)
+    this.shader2 = Shadertoy.ininShader(gl, buffers[2].fragmentStr, buffers[2].depTextureArr)
+    this.shader3 = Shadertoy.ininShader(gl, buffers[3].fragmentStr, buffers[3].depTextureArr)
+    this.shader = Shadertoy.ininShader(gl, fragmentStr, depTextureArr)
     this.vertexBuffer = Shadertoy.createVBO(gl, 3,
       [1.0, 1.0, 0.0,
         -1.0, 1.0, 0.0,
@@ -106,7 +105,13 @@ export default class Shadertoy {
     gl.vertexAttribPointer(0, this.vertexBuffer.itemSize, gl.FLOAT, false, 0, 0);
     gl.enableVertexAttribArray(0);
   }
+  static ininShader(gl, fragmentShaderStr, depTextureArr) {
+    let fragmentShader = Shadertoy.genFragmentShader(fragmentShaderStr)
 
+    let _shader = new Shader(gl, vertexShader, fragmentShader);
+    _shader.textures = depTextureArr
+    return _shader
+  }
   loadTexture(sourceObj, idx) {
     if (!sourceObj.path) return;
     return new Promise((resolve, rejcet) => {
@@ -151,11 +156,15 @@ export default class Shadertoy {
     if (!this.running) {
       return;
     }
-    this.draw(this.shader0)
+    this.draw(this.shader0, Shadertoy.framebufferTextureObj["Buffer_A"])
+    this.draw(this.shader1, Shadertoy.framebufferTextureObj["Buffer_B"])
+    this.draw(this.shader2, Shadertoy.framebufferTextureObj["Buffer_C"])
+    this.draw(this.shader3, Shadertoy.framebufferTextureObj["Buffer_D"])
+    this.draw(this.shader)
     requestAnimationFrame(() => this._frame(gl));
   }
 
-  draw(shader, renderToTexture) {
+  draw(shader, framebufferTextureObj) {
     const gl = this.gl;
     let time = Shadertoy.getTime() - this.time0;
     // let dt = time - this.timePreviousFrame;
@@ -163,8 +172,13 @@ export default class Shadertoy {
     shader.userShader()
     gl.clear(gl.DEPTH_BUFFER_BIT);
 
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null)
+    if (framebufferTextureObj) {
+      gl.bindFramebuffer(gl.FRAMEBUFFER, framebufferTextureObj.framebuffer);
+     }
     // set texture
     shader.textures.forEach((val, idx) => {
+      if (!val.type) return;
       let texture = Shadertoy.getTexture(val.ID);
       gl.activeTexture(gl.TEXTURE0 + idx);
       gl.bindTexture(gl.TEXTURE_2D, texture);
@@ -182,7 +196,7 @@ export default class Shadertoy {
   }
 
   static getTexture(ID) {
-    return Shadertoy.imageTextureObj[ID] || Shadertoy.framebufferTextureObj[ID]
+    return Shadertoy.imageTextureObj[ID] || Shadertoy.framebufferTextureObj[ID].texture
   }
   static genFragmentShader(fragmentShaderStr) {
     return `#version 300 es
