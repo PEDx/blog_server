@@ -2,12 +2,8 @@ import React, { Component } from 'react';
 
 // 引入 ECharts 主模块
 import { Tabs, Card } from 'antd';
-import echarts from 'echarts/lib/echarts';
-// 引入柱状图
-import 'echarts/lib/chart/line';
-// 引入提示框和标题组件
-import 'echarts/lib/component/tooltip';
-import 'echarts/lib/component/title';
+
+import LineChart from "../components/LineChartComponent"
 
 
 function randomData() {
@@ -64,25 +60,34 @@ const option = {
   }]
 };
 
-export default class dataLab extends Component {
+export default class DataLab extends Component {
+  constructor() {
+    super()
+    this.state = {
+      chartOption: option
+    }
+  }
   componentDidMount() {
-    let myChart = echarts.init(document.getElementById('main'), "darkness");
-    myChart.setOption(
-      option
-    );
-    setInterval(function () {
+    this.timer = setInterval(() => {
       for (var i = 0; i < 5; i++) {
         data.shift();
         data.push(randomData());
       }
 
-      myChart.setOption({
-        ...option,
-        series: [{
-          data: data
-        }]
+      this.chartRef.getInstace().then(ins => {
+        ins.setOption({
+          ...option,
+          series: [{
+            data: data
+          }]
+        })
+      }).catch(err => {
+        console.log(err);
       });
     }, 1000);
+  }
+  componentWillUnmount() {
+    clearInterval(this.timer)
   }
   render() {
     return (
@@ -95,7 +100,7 @@ export default class dataLab extends Component {
             tabPosition={"left"}
           >
             <Tabs.TabPane tab="Tab 1" key="1">
-              <div id="main" style={{ "width": "100%", "height": "600px" }}></div>
+              <LineChart options={this.state.chartOption} ref={(e) => { this.chartRef = e; }}></LineChart>
             </Tabs.TabPane>
             <Tabs.TabPane tab="Tab 2" key="2">Content of tab 2</Tabs.TabPane>
             <Tabs.TabPane tab="Tab 3" key="3">Content of tab 3</Tabs.TabPane>

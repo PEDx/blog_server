@@ -61,7 +61,7 @@ class App extends Component {
           <ul>
             <li><Link to="/home">首页</Link></li>
             <li><Link to="/blog">博客</Link></li>
-            <li><Link to="/team">团队</Link></li>
+            <li><Link to="/team">图形</Link></li>
             <li><Link to="/dataLab">数据实验室<span className={style.badge}>α</span></Link></li>
           </ul>
           <div className={style.user}>

@@ -425,15 +425,6 @@ body,
   height: 60px;
 }
 
-/* .ant-card {
-  cursor: pointer;
-}
-
-.ant-card:hover {
-  -webkit-box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-  border-color: rgba(0, 0, 0, 0.2);
-} */
 
 .com-mid-content {
   max-width: 1200px;
