@@ -10,7 +10,21 @@ export default class Article extends Component {
     render() {
         return (
             <div className="article">
-                <Shadertoy Framebuffers={[]} fragmentShader={bufferA} texture={[texture00, texture01, "", ""]}></Shadertoy>
+                <Shadertoy Framebuffers={[
+                    {
+                        fragmentStr: "",
+                        textureId: "",
+                        depTextureArr: []
+                    },
+                    {
+                        fragmentStr: "",
+                        textureId: "",
+                        depTextureArr: []
+                    },
+                ]}
+                    fragmentShader={bufferA}
+                    texture={[texture00, texture01, "", ""]}
+                ></Shadertoy>
             </div>
         );
     }
