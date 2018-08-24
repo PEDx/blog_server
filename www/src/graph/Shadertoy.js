@@ -28,18 +28,32 @@ const vertexShader = `#version 300 es
        gl_Position = aPosition;
     }`;
 export default class Shadertoy {
-  constructor(options) {
-    this.textureSrcArr = options.textureSrcArr
-    this.canvas = options.canvasDom;
-    this.gl = Shadertoy.getContext(this.canvas);
+  // 图片纹理合集
+  static imageTextureObj = {}
+  // 帧缓冲纹理合集
+  static framebufferTextureObj = {}
+  // 帧缓冲对象合集
+  static framebufferObj = {}
 
-    this.textures = [];
+  constructor(canvas, main, buffers) {
+    this.canvas = canvas;
+    this.gl = Shadertoy.getContext(this.canvas);
     this.running = false;
     this.time0 = 0.0;
+    this.width = parseInt(this.canvas.clientWidth, 10);
+    this.height = parseInt(this.canvas.clientHeight, 10);
+
+
+    let buffersDepTextureArr = []
+    buffers.forEach(val => {
+      buffersDepTextureArr.concat(val.depTextureArr)
+    })
+
+    this.allImageTexturs = main.depTextureArr.concat(buffersDepTextureArr);
 
     this.initCanvas()
-    this.initProgram(options.fragmentShaderStr)
-    this.initFramebuffers(options.framebuffers)
+    this.initFramebuffer(buffers)
+    this.initProgram(main.fragmentStr, main.depTextureArr)
 
     window.addEventListener("keydown", (event) => {
       // 暂停
@@ -54,22 +68,32 @@ export default class Shadertoy {
     });
   }
   init() {
-    return Promise.all(this.textureSrcArr.map((val, idx) => {
-      return this.loadTexture(val, idx)
+    // 异步加载图片纹理
+    return Promise.all(this.allImageTexturs.map((val, idx) => {
+      return val.type === "image" && this.loadTexture(val, idx)
+    }))
+  }
+  initFramebuffer(buffers) {
+    buffers.forEach((val => {
+      let tt = Shadertoy.createTargetTexture(this.gl, this.width, this.height)
+      let fs = Shadertoy.createFramebuffers(this.gl, tt)
+      Shadertoy.framebufferObj[val.Id] = {
+        texture: tt,
+        framebuffer: fs
+      }
     }))
   }
   initCanvas() {
-    this.width = parseInt(this.canvas.clientWidth, 10);
-    this.height = parseInt(this.canvas.clientHeight, 10);
+
     this.canvas.setAttribute('width', this.width);
     this.canvas.setAttribute('height', this.height);
   }
-  initProgram(fragmentShaderStr) {
+  initProgram(fragmentShaderStr, depTextureArr) {
     const gl = this.gl;
     let fragmentShader = Shadertoy.genFragmentShader(fragmentShaderStr)
 
     this.shader0 = new Shader(gl, vertexShader, fragmentShader);
-    // this.shader = Shadertoy.linkShader(gl, vertexShader, fragmentShader);
+    this.shader0.textures = depTextureArr
 
     this.vertexBuffer = Shadertoy.createVBO(gl, 3,
       [1.0, 1.0, 0.0,
@@ -78,15 +102,13 @@ export default class Shadertoy {
         -1.0, -1.0, 0.0
       ]);
 
-      gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
-      gl.vertexAttribPointer(0, this.vertexBuffer.itemSize, gl.FLOAT, false, 0, 0);
-      gl.enableVertexAttribArray(0);
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
+    gl.vertexAttribPointer(0, this.vertexBuffer.itemSize, gl.FLOAT, false, 0, 0);
+    gl.enableVertexAttribArray(0);
   }
-  initFramebuffers() {
 
-  }
-  loadTexture(source, idx) {
-    if (!source) return;
+  loadTexture(sourceObj, idx) {
+    if (!sourceObj.path) return;
     return new Promise((resolve, rejcet) => {
       var texture = this.gl.createTexture();
       var gl = this.gl;
@@ -99,10 +121,10 @@ export default class Shadertoy {
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
         gl.bindTexture(gl.TEXTURE_2D, null);
-        this.textures[idx] = texture
+        Shadertoy.imageTextureObj[sourceObj.ID] = texture
         resolve()
       };
-      texture.image.src = source;
+      texture.image.src = sourceObj.path;
     })
 
   }
@@ -142,21 +164,25 @@ export default class Shadertoy {
     gl.clear(gl.DEPTH_BUFFER_BIT);
 
     // set texture
-    this.textures.forEach((val, idx) => {
-      let texture = this.textures[idx];
+    shader.textures.forEach((val, idx) => {
+      let texture = Shadertoy.getTexture(val.ID);
       gl.activeTexture(gl.TEXTURE0 + idx);
       gl.bindTexture(gl.TEXTURE_2D, texture);
-      shader.setInt('iChannel' + idx, idx );
+      shader.setInt('iChannel' + idx, idx);
     })
 
     // update uniforms
-    shader.setVec3("iResolution", [this.width, this.height, 0.0] )
-    shader.setFloat("iTime", time )
+    shader.setVec3("iResolution", [this.width, this.height, 0.0])
+    shader.setFloat("iTime", time)
 
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, this.vertexBuffer.numItems);
   }
   drawToTexture() {
 
+  }
+
+  static getTexture(ID) {
+    return Shadertoy.imageTextureObj[ID] || Shadertoy.framebufferTextureObj[ID]
   }
   static genFragmentShader(fragmentShaderStr) {
     return `#version 300 es
@@ -199,6 +225,8 @@ export default class Shadertoy {
 
     const attachmentPoint = gl.COLOR_ATTACHMENT0;
     gl.framebufferTexture2D(gl.FRAMEBUFFER, attachmentPoint, gl.TEXTURE_2D, targetTexture, level);
+
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
     return framebuffers;
   }
   static createTargetTexture(gl, width, height) {
@@ -231,33 +259,6 @@ export default class Shadertoy {
     vertexBuffer.itemSize = stride;
     vertexBuffer.numItems = vertexData.length / stride;
     return vertexBuffer;
-  }
-
-  static linkShader(gl, vertexSource, fragmentSource) {
-    var program = gl.createProgram();
-    gl.attachShader(program, Shadertoy.compileShader(gl, gl.VERTEX_SHADER, vertexSource));
-    gl.attachShader(program, Shadertoy.compileShader(gl, gl.FRAGMENT_SHADER, fragmentSource));
-    gl.linkProgram(program);
-
-    if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
-      Shadertoy.showLog(gl, program);
-      throw Error(`Failed to link shader!`);
-    }
-
-    return program;
-  }
-
-  static compileShader(gl, shaderType, source) {
-    var shader = gl.createShader(shaderType);
-    gl.shaderSource(shader, source);
-    gl.compileShader(shader);
-
-    if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-      let type = shaderType === gl.VERTEX_SHADER ? 'vertex shader' : 'fragment shader';
-      Shadertoy.showLog(gl, shader);
-      throw Error(`Failed to compile ${type}`);
-    }
-    return shader;
   }
 
   static showLog(gl, shader) {

@@ -5,7 +5,9 @@ import Shadertoy from "../graph/Shadertoy"
 export default class ShadertoyComponent extends Component {
   constructor(props) {
     super(props);
-    this.fragmentShader = props.fragmentShader
+    this.main = props.main
+    this.buffers = props.buffers
+
     this.texture = props.texture
     this.state = {
       toyInstance: null
@@ -13,11 +15,11 @@ export default class ShadertoyComponent extends Component {
   }
 
   componentDidMount() {
-    let st = new Shadertoy({
-      canvasDom: this.canvasElement,
-      fragmentShaderStr: this.fragmentShader,
-      textureSrcArr: this.texture || []
-    })
+    let st = new Shadertoy(
+      this.canvasElement,
+      this.main,
+      this.buffers
+    )
     st.init().then((res) => {
       st.start()
     })

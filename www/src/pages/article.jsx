@@ -10,18 +10,44 @@ export default class Article extends Component {
     render() {
         return (
             <div className="article">
-                <Shadertoy Framebuffers={[
-                    {
-                        fragmentStr: "",
-                        textureId: "",
-                        depTextureArr: []
-                    },
-                    {
-                        fragmentStr: "",
-                        textureId: "",
-                        depTextureArr: []
-                    },
-                ]}
+                <Shadertoy
+                    buffers={[
+                        {
+                            fragmentStr: "",
+                            Id: "Buffer_A",
+                            depTextureArr: []
+                        },
+                        {
+                            fragmentStr: "",
+                            Id: "Buffer_B",
+                            depTextureArr: []
+                        },
+                    ]}
+                    main={
+                        {
+                            fragmentStr: bufferA,
+                            depTextureArr: [
+                                {
+                                    type: "image",
+                                    ID: texture00,
+                                    path: texture00
+                                },
+                                {
+                                    type: "image",
+                                    ID: texture01,
+                                    path: texture01
+                                },
+                                {
+                                    type: "framebuffer",
+                                    ID: "Buffer_A"
+                                },
+                                {
+                                    type: "framebuffer",
+                                    ID: "Buffer_B"
+                                },
+                            ]
+                        }
+                    }
                     fragmentShader={bufferA}
                     texture={[texture00, texture01, "", ""]}
                 ></Shadertoy>

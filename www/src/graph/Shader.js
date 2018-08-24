@@ -1,22 +1,22 @@
 export default class Shader{
   constructor(gl, vertexSource, fragmentSource) {
     this.gl = gl;
-    this.shader = Shader.linkShader(gl, vertexSource, fragmentSource)
+    this.ID = Shader.linkShader(gl, vertexSource, fragmentSource)
   }
   userShader() {
-    this.gl.useProgram(this.shader)
+    this.gl.useProgram(this.ID)
   }
-  setVec3(id, vec3) {
-    this.gl.uniform3f(this.gl.getUniformLocation(this.shader, id), vec3[0], vec3[1], vec3[2]);
+  setVec3(name, vec3) {
+    this.gl.uniform3f(this.gl.getUniformLocation(this.ID, name), vec3[0], vec3[1], vec3[2]);
   }
-  setVec4(id, vec4) {
-    this.gl.uniform4f(this.gl.getUniformLocation(this.shader, id), vec4[0], vec4[1], vec4[2], vec4[3]);
+  setVec4(name, vec4) {
+    this.gl.uniform4f(this.gl.getUniformLocation(this.ID, name), vec4[0], vec4[1], vec4[2], vec4[3]);
   }
-  setFloat(id, float) {
-    this.gl.uniform1f(this.gl.getUniformLocation(this.shader, id), float);
+  setFloat(name, float) {
+    this.gl.uniform1f(this.gl.getUniformLocation(this.ID, name), float);
   }
-  setInt(id, int) {
-    this.gl.uniform1i(this.gl.getUniformLocation(this.shader, id), int);
+  setInt(name, int) {
+    this.gl.uniform1i(this.gl.getUniformLocation(this.ID, name), int);
   }
   static linkShader(gl, vertexSource, fragmentSource) {
     var program = gl.createProgram();

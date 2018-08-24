@@ -302,6 +302,6 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     color = pow(color, vec3(p));
     #endif
 
-    fragColor = vec4(saturate(color), 1.0);
+    fragColor = vec4(saturate(color * 10.0), 1.0);
 
 }
