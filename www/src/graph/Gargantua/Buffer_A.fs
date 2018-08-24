@@ -5,7 +5,7 @@ Temporal AA for a smooth image. Temporal accumulation is disabled while moving t
 */
 
 #define ITERATIONS 200          //Increase for less grainy result
-#define TEMPORAL_AA
+// #define TEMPORAL_AA
 
 
 const vec3 MainColor = vec3(1.0);

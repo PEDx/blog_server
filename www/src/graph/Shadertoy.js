@@ -33,7 +33,7 @@ export default class Shadertoy {
   constructor(options) {
     this.textureSrcArr = options.textureSrcArr
     this.canvas = options.canvasDom;
-    this.gl = this.canvas.getContext("webgl");
+    this.gl = this.getGLContext(this.canvas);
 
     this.textures = [];
     this.running = false;
@@ -45,14 +45,16 @@ export default class Shadertoy {
     this.canvas.setAttribute('width', this.width);
     this.canvas.setAttribute('height', this.height);
 
-    let vertexShader = `
-    attribute vec4 aPosition;
-     void main() {
+    let vertexShader = `#version 300 es
+    in vec4 aPosition;
+
+    void main() {
        gl_Position = aPosition;
     }`;
 
-    let fragmentShader = `
+    let fragmentShader = `#version 300 es
     precision mediump float;
+    out vec4 my_FragColor;
     uniform vec3 iResolution;
     uniform float iTime;
     uniform sampler2D iChannel0;
@@ -60,12 +62,14 @@ export default class Shadertoy {
     uniform sampler2D iChannel2;
     uniform sampler2D iChannel3;
 
+    const vec4 iMouse = vec4(0.0, 0.0, 0.0, 0.0);
+
     ${options.fragmentShaderStr}
 
     void main() {
       vec4 color = vec4(0.0);
       mainImage(color, gl_FragCoord.xy);
-      gl_FragColor = color;
+      my_FragColor = color;
     }`
 
     this.shader = Shadertoy.linkShader(this.gl, vertexShader, fragmentShader);
@@ -119,7 +123,17 @@ export default class Shadertoy {
     })
 
   }
-
+  getGLContext(canvas) {
+    let gl = canvas.getContext('webgl2');
+    if (!gl) {
+      gl = canvas.getContext('webgl') ||
+        canvas.getContext('experimental-webgl');
+    }
+    if (!gl) {
+      console.log('your browser does not support WebGL');
+    }
+    return gl;
+  }
   start() {
     if (this.running) {
       return;

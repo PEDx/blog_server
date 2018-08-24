@@ -28,6 +28,9 @@ export default class ShadertoyComponent extends Component {
   getInstace() {
     return this.state.toyInstance
   }
+  componentWillUnmount() {
+    this.state.toyInstance.stop()
+  }
   render() {
     return (
       <canvas ref={(e) => { this.canvasElement = e; }} style={{ "width": "100%", "height": "100%" }}></canvas>
