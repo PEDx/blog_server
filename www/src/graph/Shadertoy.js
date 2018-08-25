@@ -73,14 +73,24 @@ export default class Shadertoy {
   }
   initFramebuffer(buffers) {
     buffers.forEach((val => {
-      let tt = Shadertoy.createTargetTexture(this.gl, this.width, this.height)
-      let fs = Shadertoy.createFramebuffers(this.gl, tt)
-      Shadertoy.framebufferTextureObj[val.Id] = {
-        texture: tt,
-        framebuffer: fs
+      this.creatFramebufferTextureObj(val.ID)
+      if(val.circulation){
+        this.creatFramebufferTextureObj(val.ID + "_c")
+        // Shadertoy.framebufferTextureObj[val.ID +  "_c"] = {
+        //   texture: Shadertoy.createTargetTexture(this.gl, this.width, this.height),
+        // }
       }
     }))
   }
+  creatFramebufferTextureObj(id, flag) {
+    let tt = Shadertoy.createTargetTexture(this.gl, this.width, this.height)
+    let fs = Shadertoy.createFramebuffers(this.gl, tt)
+    Shadertoy.framebufferTextureObj[id] = {
+      texture: tt,
+      framebuffer: fs
+    }
+  }
+
   initCanvas() {
 
     this.canvas.setAttribute('width', this.width);
@@ -118,13 +128,12 @@ export default class Shadertoy {
       var texture = this.gl.createTexture();
       var gl = this.gl;
       texture.image = new Image();
-
+      let format = gl[sourceObj.format || "RGBA"]
       texture.image.onload = () => {
         gl.bindTexture(gl.TEXTURE_2D, texture);
         gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
-        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, texture.image);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+        gl.texImage2D(gl.TEXTURE_2D, 0, format, format, gl.UNSIGNED_BYTE, texture.image);
+        Shadertoy.setTexParam(this.gl, "image")
         gl.bindTexture(gl.TEXTURE_2D, null);
         Shadertoy.imageTextureObj[sourceObj.ID] = texture
         resolve()
@@ -156,7 +165,11 @@ export default class Shadertoy {
     if (!this.running) {
       return;
     }
-    this.draw(this.shader0, Shadertoy.framebufferTextureObj["Buffer_A"])
+    this.time = Shadertoy.getTime() - this.time0;
+    // let dt = time - this.timePreviousFrame;
+    this.timePreviousFrame = this.time;
+
+    this.draw(this.shader0, Shadertoy.framebufferTextureObj["Buffer_A"], true)
     this.draw(this.shader1, Shadertoy.framebufferTextureObj["Buffer_B"])
     this.draw(this.shader2, Shadertoy.framebufferTextureObj["Buffer_C"])
     this.draw(this.shader3, Shadertoy.framebufferTextureObj["Buffer_D"])
@@ -164,13 +177,11 @@ export default class Shadertoy {
     requestAnimationFrame(() => this._frame(gl));
   }
 
-  draw(shader, framebufferTextureObj) {
+  draw(shader, framebufferTextureObj, circulation) {
     const gl = this.gl;
-    let time = Shadertoy.getTime() - this.time0;
-    // let dt = time - this.timePreviousFrame;
-    this.timePreviousFrame = time;
-    shader.userShader()
+    
     gl.clear(gl.DEPTH_BUFFER_BIT);
+    shader.userShader()
 
     gl.bindFramebuffer(gl.FRAMEBUFFER, null)
     if (framebufferTextureObj) {
@@ -187,12 +198,31 @@ export default class Shadertoy {
 
     // update uniforms
     shader.setVec3("iResolution", [this.width, this.height, 0.0])
-    shader.setFloat("iTime", time)
+    shader.setFloat("iTime", this.time)
 
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, this.vertexBuffer.numItems);
-  }
-  drawToTexture() {
 
+  
+    if(circulation) {
+      let fto = Shadertoy.framebufferTextureObj["Buffer_A_c"]
+      // let fbo = Shadertoy.createFramebuffers(this.gl, framebufferTextureObj.texture)
+      // gl.bindFramebuffer(gl.FRAMEBUFFER, fbo)
+      // gl.bindTexture(gl.TEXTURE_2D, fto.texture);
+      
+      // gl.copyTexSubImage2D(gl.TEXTURE_2D, 0, 0 , 0, 0, 0, this.width, this.height);
+
+      // gl.bindTexture(gl.TEXTURE_2D,null);
+      Shadertoy.copyFramebuffer(this.gl, framebufferTextureObj.framebuffer, fto.framebuffer, this.width, this.height);
+    }
+  }
+  static copyFramebuffer(gl, src, dst, w, h) {
+    gl.bindFramebuffer(gl.READ_FRAMEBUFFER, src);
+    gl.bindFramebuffer(gl.DRAW_FRAMEBUFFER, dst);
+    gl.clearBufferfv(gl.COLOR, 0, [0.0, 0.0, 0.0, 1.0]);
+    gl.blitFramebuffer( 0, 0, w,h,
+                         0, 0, w,h,
+                         gl.COLOR_BUFFER_BIT, gl.LINEAR
+    );
   }
 
   static getTexture(ID) {
@@ -259,13 +289,24 @@ export default class Shadertoy {
       targetTextureWidth, targetTextureHeight, border,
       format, type, null);
 
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    Shadertoy.setTexParam(gl, "framebuffer")
 
     return targetTexture
   }
-
+  static setTexParam(gl, type) {
+    if(type === "framebuffer") {
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    }else {
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT);
+      gl.generateMipmap(gl.TEXTURE_2D);
+    }
+  }
   static createVBO(gl, stride, vertexData) {
     var vertexBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
@@ -281,6 +322,6 @@ export default class Shadertoy {
   }
 
   static getTime() {
-    return 0.001 * new Date().getTime();
+    return  new Date().getTime() / 1000;
   }
 }
