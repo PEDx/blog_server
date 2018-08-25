@@ -64,6 +64,28 @@ export default class Shadertoy {
         }
       }
     });
+    let mouse = this.mouse  = []
+
+    this.canvas.addEventListener('mousemove', (evt) => {
+      if (mouse.z + mouse.w !== 0) {
+          var rect = this.canvas.getBoundingClientRect();
+          mouse[0] = evt.clientX - rect.left;
+          mouse[1] = this.width - evt.clientY - rect.top;
+      } 
+  }, false);
+    this.canvas.addEventListener('mousedown', (evt) => {
+        if (evt.button === 0)
+            mouse[2] = 1;
+        if (evt.button === 2)
+            mouse[3] = 1;
+    }, false);
+    this.canvas.addEventListener('mouseup', (evt) => {
+        if (evt.button === 0)
+          mouse[2] = 0;
+        if (evt.button === 2)
+          mouse[3] = 0;
+    }, false);
+
   }
   init() {
     // 异步加载图片纹理
@@ -148,6 +170,7 @@ export default class Shadertoy {
       return;
     }
     this.running = true;
+    this.frame = 0;
     this.time0 = Shadertoy.getTime();
     this.timePreviousFrame = this.time0;
 
@@ -165,6 +188,7 @@ export default class Shadertoy {
     if (!this.running) {
       return;
     }
+    this.frame++;
     this.time = Shadertoy.getTime() - this.time0;
     // let dt = time - this.timePreviousFrame;
     this.timePreviousFrame = this.time;
@@ -199,6 +223,8 @@ export default class Shadertoy {
     // update uniforms
     shader.setVec3("iResolution", [this.width, this.height, 0.0])
     shader.setFloat("iTime", this.time)
+    shader.setVec4("iMouse", this.mouse)
+    shader.setVec4("iFrame", this.frame / this.time)
 
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, this.vertexBuffer.numItems);
 
@@ -236,12 +262,13 @@ export default class Shadertoy {
 
     uniform vec3 iResolution;
     uniform float iTime;
+    uniform vec4 iMouse;
     uniform sampler2D iChannel0;
     uniform sampler2D iChannel1;
     uniform sampler2D iChannel2;
     uniform sampler2D iChannel3;
 
-    const vec4 iMouse = vec4(0.0, 0.0, 0.0, 0.0);
+    // const vec4 iMouse = vec4(0.0, 0.0, 0.0, 0.0);
 
     ${fragmentShaderStr}
 
