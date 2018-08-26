@@ -18,7 +18,8 @@ export default class ShadertoyComponent extends Component {
     let st = new Shadertoy(
       this.canvasElement,
       this.main,
-      this.buffers
+      this.buffers,
+      true
     )
     st.init().then((res) => {
       st.start()
@@ -35,7 +36,9 @@ export default class ShadertoyComponent extends Component {
   }
   render() {
     return (
-      <canvas ref={(e) => { this.canvasElement = e; }} style={{ "width": "100%", "height": "100%" }}></canvas>
+      <div>
+        <canvas ref={(e) => { this.canvasElement = e; }} style={{ "width": "100%", "height": "100%" }}></canvas>
+      </div>
     )
   }
 }

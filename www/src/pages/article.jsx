@@ -26,26 +26,26 @@ export default class Article extends Component {
                   ID: texture00,
                   path: texture00,
                   option: {
-                    filter: "mipmap",
-                    wrap: "repeat",
+                    filter: 'mipmap',
+                    wrap: 'repeat'
                   }
                 },
                 {
                   type: 'image',
                   ID: texture01,
                   path: texture01,
-                  format: "RGB",
+                  format: 'RGB',
                   option: {
-                    filter: "mipmap",
-                    wrap: "repeat",
+                    filter: 'mipmap',
+                    wrap: 'repeat'
                   }
                 },
                 {
                   type: 'framebuffer',
-                  ID: 'Buffer_A_c',
+                  ID: 'Buffer_A_Copy',
                   option: {
-                    filter: "linear",
-                    wrap: "clamp",
+                    filter: 'linear',
+                    wrap: 'clamp'
                   }
                 }
               ]
@@ -58,7 +58,8 @@ export default class Article extends Component {
                   type: 'framebuffer',
                   ID: 'Buffer_A',
                   option: {
-                    
+                    filter: 'linear',
+                    wrap: 'clamp'
                   }
                 }
               ]
@@ -71,8 +72,8 @@ export default class Article extends Component {
                   type: 'framebuffer',
                   ID: 'Buffer_B',
                   option: {
-                    filter: "linear",
-                    wrap: "clamp",
+                    filter: 'linear',
+                    wrap: 'clamp'
                   }
                 }
               ]
@@ -85,8 +86,8 @@ export default class Article extends Component {
                   type: 'framebuffer',
                   ID: 'Buffer_C',
                   option: {
-                    filter: "linear",
-                    wrap: "clamp",
+                    filter: 'linear',
+                    wrap: 'clamp'
                   }
                 }
               ]
@@ -99,28 +100,36 @@ export default class Article extends Component {
                 type: 'framebuffer',
                 ID: 'Buffer_A',
                 option: {
-                  filter: "linear",
-                  wrap: "clamp",
+                  filter: 'linear',
+                  wrap: 'clamp'
                 }
               },
               {
-                type: null
+                type: 'framebuffer',
+                ID: 'Buffer_A_Copy',
+                option: {
+                  filter: 'linear',
+                  wrap: 'clamp'
+                }
               },
               {
-                type: null
+                type: 'framebuffer',
+                ID: 'Buffer_C',
+                option: {
+                  filter: 'linear',
+                  wrap: 'clamp'
+                }
               },
               {
                 type: 'framebuffer',
                 ID: 'Buffer_D',
                 option: {
-                  filter: "linear",
-                  wrap: "clamp",
+                  filter: 'linear',
+                  wrap: 'clamp'
                 }
               }
             ]
           }}
-          fragmentShader={bufferA}
-          texture={[texture00, texture01, '', '']}
         />
       </div>
     )
