@@ -175,9 +175,27 @@ export default class Shadertoy {
       this.gl,
       `void mainImage( out vec4 fragColor, in vec2 fragCoord )
     {
-      vec2 uv = fragCoord.xy / iResolution.xy;
+          vec2 uv = fragCoord.xy / iResolution.xy ;
 
-      fragColor = vec4(texture(iChannel0, uv).rgb, 1.0);
+          vec4 color1 = vec4(0.0f, 1.0f, 0.0f, 1.0f);
+
+          float divide = 4.0;
+          float _X = 1.0 / divide;
+          float _Y = 1.0 / divide;
+          float gap = 0.001;
+
+          if(uv.x < _X && uv.y < _Y) {
+              color1 = vec4(texture(iChannel0, uv * divide).rgb, 1.0);
+          }else if(uv.x < _X && uv.y >= _Y + gap && uv.y < 2.0 * _Y) {
+              color1 = vec4(texture(iChannel1, vec2(uv.x, uv.y - 0.25)  * divide ).rgb, 1.0);
+          }else if(uv.x < _X && uv.y >= 2.0 * _Y + gap&& uv.y < 3.0 * _Y) {
+              color1 = vec4(texture(iChannel2, vec2(uv.x, uv.y - 0.5)  * divide ).rgb, 1.0);
+          }else if(uv.x < _X && uv.y >= 3.0 * _Y+ gap && uv.y < 4.0 * _Y) {
+              color1 = vec4(texture(iChannel3, vec2(uv.x, uv.y - 0.75)  * divide ).rgb, 1.0);
+          }else if(uv.x > _X + gap){
+              color1 = vec4(texture(iChannel0, uv ).rgb, 1.0);
+          }
+          fragColor = color1;
     }`,
       []
     )

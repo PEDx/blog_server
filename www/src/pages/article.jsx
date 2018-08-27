@@ -103,8 +103,22 @@ export default class Article extends Component {
                   wrap: 'clamp'
                 }
               },
-              null,
-              null,
+              {
+                type: 'framebuffer',
+                ID: 'Buffer_B',
+                option: {
+                  filter: 'linear',
+                  wrap: 'clamp'
+                }
+              },
+              {
+                type: 'framebuffer',
+                ID: 'Buffer_C',
+                option: {
+                  filter: 'linear',
+                  wrap: 'clamp'
+                }
+              },
               {
                 type: 'framebuffer',
                 ID: 'Buffer_D',
