@@ -106,7 +106,7 @@ export default class Article extends Component {
               },
               {
                 type: 'framebuffer',
-                ID: 'Buffer_A_Copy',
+                ID: 'Buffer_B',
                 option: {
                   filter: 'linear',
                   wrap: 'clamp'
@@ -114,7 +114,7 @@ export default class Article extends Component {
               },
               {
                 type: 'framebuffer',
-                ID: 'Buffer_C',
+                ID: 'Buffer_A_Copy',
                 option: {
                   filter: 'linear',
                   wrap: 'clamp'

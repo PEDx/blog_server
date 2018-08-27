@@ -49,18 +49,18 @@ vec4 BicubicTexture(in sampler2D tex, in vec2 coord)
 
 vec3 ColorFetch(vec2 coord)
 {
- 	return texture(iChannel0, coord).rgb;   
+ 	return texture(iChannel0, coord).rgb;
 }
 
 vec3 BloomFetch(vec2 coord)
 {
- 	return BicubicTexture(iChannel3, coord).rgb;   
+ 	return BicubicTexture(iChannel3, coord).rgb;
 }
 
 vec3 Grab(vec2 coord, const float octave, const vec2 offset)
 {
  	float scale = exp2(octave);
-    
+
     coord /= scale;
     coord -= offset;
 
@@ -70,22 +70,22 @@ vec3 Grab(vec2 coord, const float octave, const vec2 offset)
 vec2 CalcOffset(float octave)
 {
     vec2 offset = vec2(0.0);
-    
+
     vec2 padding = vec2(10.0) / iResolution.xy;
-    
+
     offset.x = -min(1.0, floor(octave / 3.0)) * (0.25 + padding.x);
-    
+
     offset.y = -(1.0 - (1.0 / exp2(octave))) - padding.y * octave;
 
 	offset.y += min(1.0, floor(octave / 3.0)) * 0.35;
-    
- 	return offset;   
+
+ 	return offset;
 }
 
 vec3 GetBloom(vec2 coord)
 {
  	vec3 bloom = vec3(0.0);
-    
+
     //Reconstruct bloom from multiple blurred images
     bloom += Grab(coord, 1.0, vec2(CalcOffset(0.0))) * 1.0;
     bloom += Grab(coord, 2.0, vec2(CalcOffset(1.0))) * 1.5;
@@ -101,28 +101,28 @@ vec3 GetBloom(vec2 coord)
 
 void mainImage( out vec4 fragColor, in vec2 fragCoord )
 {
-    
+
     vec2 uv = fragCoord.xy / iResolution.xy;
-    
+
     vec3 color = ColorFetch(uv);
-    
-    
+
+
     color += GetBloom(uv) * 0.08;
-    
+
     color *= 200.0;
-    
+
 
     //Tonemapping and color grading
     color = pow(color, vec3(1.5));
     color = color / (1.0 + color);
     color = pow(color, vec3(1.0 / 1.5));
 
-    
+
     color = mix(color, color * color * (3.0 - 2.0 * color), vec3(1.0));
-    color = pow(color, vec3(1.3, 1.20, 1.0));    
+    color = pow(color, vec3(1.3, 1.20, 1.0));
 
 	color = saturate(color * 1.01);
-    
+
     color = pow(color, vec3(0.7 / 2.2));
 
     fragColor = vec4(color, 1.0);

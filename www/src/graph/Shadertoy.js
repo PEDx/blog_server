@@ -39,6 +39,8 @@ export default class Shadertoy {
       this.initDebugMode()
     }
 
+    this.getExtension(this.gl)
+
     this.running = false
     this.time0 = 0.0
     this.bufferShaderArr = []
@@ -77,7 +79,8 @@ export default class Shadertoy {
     this.canvas.addEventListener(
       'mousemove',
       evt => {
-        if (mouse.z + mouse.w !== 0) {
+
+        if (mouse[2] + mouse[3] !== 0) {
           var rect = this.canvas.getBoundingClientRect()
           mouse[0] = evt.clientX - rect.left
           mouse[1] = this.width - evt.clientY - rect.top
@@ -88,8 +91,8 @@ export default class Shadertoy {
     this.canvas.addEventListener(
       'mousedown',
       evt => {
-        if (evt.button === 0) mouse[2] = 1
-        if (evt.button === 2) mouse[3] = 1
+        if (evt.button === 0) mouse[2] = 1.01
+        if (evt.button === 2) mouse[3] = 1.01
       },
       false
     )
@@ -110,6 +113,12 @@ export default class Shadertoy {
       })
     )
   }
+  getExtension(gl) {
+    gl.getExtension('EXT_color_buffer_float');
+    gl.getExtension('OES_texture_float_linear');
+    gl.getExtension('OES_texture_half_float_linear');
+    gl.getExtension('EXT_texture_filter_anisotropic');
+  }
   initFramebuffer(buffers) {
     buffers.forEach(val => {
       this.creatFramebufferTextureObj(val.ID)
@@ -120,25 +129,13 @@ export default class Shadertoy {
   }
   creatFramebufferTextureObj(id, flag) {
     let gl = this.gl
-    let format = flag
-      ? {
-          if: gl.RGBA,
-          fo: gl.RGBA,
-          ty: gl.UNSIGNED_BYTE
-        }
-      : {
-          if: gl.RGBA,
-          fo: gl.RGBA,
-          ty: gl.UNSIGNED_BYTE
-        }
-    // debugger
+
     let tt = Shadertoy.createTargetTexture(
-      this.gl,
+      gl,
       this.width,
       this.height,
-      format
     )
-    let fs = Shadertoy.createFramebuffers(this.gl, tt)
+    let fs = Shadertoy.createFramebuffers(gl, tt)
     Shadertoy.framebufferTextureObj[id] = {
       texture: tt,
       framebuffer: fs
@@ -206,18 +203,33 @@ export default class Shadertoy {
     this.draw(this.mainShader)
     requestAnimationFrame(() => this._frame(gl))
   }
+  start() {
+    if (this.running) {
+      return
+    }
+    this.running = true
+    this.frame = 0
+    this.time0 = Shadertoy.getTime()
+    this.timePreviousFrame = this.time0
+    this.gl.viewport(0, 0, this.width, this.height)
+    this.gl.clearColor(0.0, 0.0, 0.0, 1.0)
+    this.gl.disable(this.gl.DEPTH_TEST)
+
+    this._frame(this.gl)
+  }
   draw(shader, framebufferTextureObj, ID) {
     const gl = this.gl
     gl.clear(gl.COLOR_BUFFER_BIT)
+
     shader.userShader()
 
     gl.bindFramebuffer(gl.FRAMEBUFFER, null)
     gl.bindTexture(gl.TEXTURE_2D, null)
-    
+
     if (framebufferTextureObj) {
       gl.bindFramebuffer(gl.FRAMEBUFFER, framebufferTextureObj.framebuffer)
     }
-    
+
     shader.textures.forEach((val, idx) => {
       if (!val.type) return
       let texture = Shadertoy.getTexture(val.ID)
@@ -232,16 +244,20 @@ export default class Shadertoy {
     shader.setVec4('iFrame', this.frame / this.time)
 
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, this.vertexBuffer.numItems)
-
     if (ID === 'Buffer_A') {
       let fto = Shadertoy.framebufferTextureObj[`${ID}_Copy`]
-      Shadertoy.copyFramebuffer(
+      Shadertoy.copyTex(
         this.gl,
-        framebufferTextureObj.framebuffer,
-        fto.framebuffer,
+        fto,
         this.width,
         this.height
       )
+      // debugger
+      // gl.clear(gl.COLOR_BUFFER_BIT)
+      // shader.userShader()
+      // gl.bindTexture(gl.TEXTURE_2D, fto.texture)
+      // gl.bindFramebuffer(gl.FRAMEBUFFER, fto.framebuffer)
+      // gl.drawArrays(gl.TRIANGLE_STRIP, 0, this.vertexBuffer.numItems)
     }
   }
   loadTexture(sourceObj, idx) {
@@ -272,20 +288,7 @@ export default class Shadertoy {
     })
   }
 
-  start() {
-    if (this.running) {
-      return
-    }
-    this.running = true
-    this.frame = 0
-    this.time0 = Shadertoy.getTime()
-    this.timePreviousFrame = this.time0
 
-    this.gl.disable(this.gl.DEPTH_TEST)
-    this.gl.viewport(0, 0, this.width, this.height)
-    this.gl.clearColor(0.0, 0.0, 0.0, 1.0)
-    this._frame(this.gl)
-  }
 
   stop() {
     this.running = false
@@ -312,13 +315,12 @@ export default class Shadertoy {
       gl.disable(gl.BLEND)
     }
   }
-  static copyFramebuffer(gl, src, dst, w, h) {
-    gl.bindFramebuffer(gl.READ_FRAMEBUFFER, src)
-    gl.bindFramebuffer(gl.DRAW_FRAMEBUFFER, dst)
-
-    gl.copyTexSubImage2D(gl.TEXTURE_2D, 0, 0, 0, 0, 0, w, h)
-    // gl.bindFramebuffer(gl.FRAMEBUFFER, null)
-    gl.bindTexture(gl.TEXTURE_2D, null)
+  // 复制当前帧到纹理
+  static copyTex(gl, dst, w, h) {
+    gl.bindTexture(gl.TEXTURE_2D, dst.texture);
+    gl.copyTexSubImage2D(gl.TEXTURE_2D, 0, 0, 0, 0, 0, w, h);
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    // gl.bindTexture(gl.TEXTURE_2D, null);
   }
 
   static getTexture(ID) {
@@ -395,7 +397,7 @@ export default class Shadertoy {
     }
     return framebuffers
   }
-  static createTargetTexture(gl, width, height, format) {
+  static createTargetTexture(gl, width, height) {
     const targetTextureWidth = width
     const targetTextureHeight = height
 
@@ -403,20 +405,17 @@ export default class Shadertoy {
     gl.bindTexture(gl.TEXTURE_2D, targetTexture)
 
     const level = 0
-    const internalFormat = format.if
     const border = 0
-    const form = format.fo
-    const type = format.ty
     Shadertoy.setTexParam(gl, 'framebuffer')
     gl.texImage2D(
       gl.TEXTURE_2D,
       level,
-      internalFormat,
+      gl.RGBA32F,
       targetTextureWidth,
       targetTextureHeight,
       border,
-      form,
-      type,
+      gl.RGBA,
+      gl.FLOAT,
       null
     )
 
