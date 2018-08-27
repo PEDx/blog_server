@@ -56,7 +56,7 @@ export default class Article extends Component {
               depTextureArr: [
                 {
                   type: 'framebuffer',
-                  ID: 'Buffer_A',
+                  ID: 'Buffer_A_Copy',
                   option: {
                     filter: 'linear',
                     wrap: 'clamp'
@@ -98,7 +98,7 @@ export default class Article extends Component {
             depTextureArr: [
               {
                 type: 'framebuffer',
-                ID: 'Buffer_A',
+                ID: 'Buffer_A_Copy',
                 option: {
                   filter: 'linear',
                   wrap: 'clamp'

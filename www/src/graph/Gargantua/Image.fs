@@ -127,4 +127,6 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 
     fragColor = vec4(color, 1.0);
 
+    // fragColor = vec4(texture(iChannel1, uv).rgb, 1.0);
+
 }

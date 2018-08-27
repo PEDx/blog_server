@@ -223,8 +223,7 @@ export default class Shadertoy {
 
     shader.userShader()
 
-    gl.bindFramebuffer(gl.FRAMEBUFFER, null)
-    gl.bindTexture(gl.TEXTURE_2D, null)
+
 
     if (framebufferTextureObj) {
       gl.bindFramebuffer(gl.FRAMEBUFFER, framebufferTextureObj.framebuffer)
@@ -244,6 +243,7 @@ export default class Shadertoy {
     shader.setVec4('iFrame', this.frame / this.time)
 
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, this.vertexBuffer.numItems)
+
     if (ID === 'Buffer_A') {
       let fto = Shadertoy.framebufferTextureObj[`${ID}_Copy`]
       Shadertoy.copyTex(
@@ -252,13 +252,10 @@ export default class Shadertoy {
         this.width,
         this.height
       )
-      // debugger
-      // gl.clear(gl.COLOR_BUFFER_BIT)
-      // shader.userShader()
-      // gl.bindTexture(gl.TEXTURE_2D, fto.texture)
-      // gl.bindFramebuffer(gl.FRAMEBUFFER, fto.framebuffer)
-      // gl.drawArrays(gl.TRIANGLE_STRIP, 0, this.vertexBuffer.numItems)
     }
+
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null)
+    gl.bindTexture(gl.TEXTURE_2D, null)
   }
   loadTexture(sourceObj, idx) {
     if (!sourceObj.path) return
@@ -319,8 +316,6 @@ export default class Shadertoy {
   static copyTex(gl, dst, w, h) {
     gl.bindTexture(gl.TEXTURE_2D, dst.texture);
     gl.copyTexSubImage2D(gl.TEXTURE_2D, 0, 0, 0, 0, 0, w, h);
-    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-    // gl.bindTexture(gl.TEXTURE_2D, null);
   }
 
   static getTexture(ID) {
