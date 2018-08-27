@@ -13,13 +13,6 @@ import Shader from './Shader'
   uniform samplerXX iChanneli;
 */
 
-/*
-options = {
-  canvasDom,
-  fragmentShaderStr,
-  textureSrcArr,
-}
-*/
 const vertexShader = `#version 300 es
     in vec4 aPosition;
 
@@ -30,11 +23,15 @@ export default class Shadertoy {
   // 图片纹理合集
   static imageTextureObj = {}
   // 帧缓冲纹理合集
-  static framebufferTextureObj = {}
+  static framebufferTextureMap = {}
+
+  static _randomStr = Shadertoy.generateRandomAlphaNum(6)
 
   constructor(canvas, main, buffers, debug) {
     this.canvas = canvas
     this.gl = Shadertoy.getContext(this.canvas)
+
+
     if (debug) {
       this.initDebugMode()
     }
@@ -43,7 +40,7 @@ export default class Shadertoy {
 
     this.running = false
     this.time0 = 0.0
-    this.bufferShaderArr = []
+    this.bufferShaderMap = {}
     this.width = parseInt(this.canvas.clientWidth, 10)
     this.height = parseInt(this.canvas.clientHeight, 10)
 
@@ -52,6 +49,10 @@ export default class Shadertoy {
     this.buffers = buffers
 
     buffers.forEach(val => {
+      // 检查是否有循环引用
+      val.depTextureArr && val.depTextureArr.forEach(val2 => {
+        if (val.ID === val2.ID) val.circulation = true
+      })
       buffersDepTextureArr = buffersDepTextureArr.concat(val.depTextureArr)
     })
 
@@ -109,7 +110,7 @@ export default class Shadertoy {
     // 异步加载图片纹理
     return Promise.all(
       this.allTexturs.map((val, idx) => {
-        return val.type === 'image' && this.loadTexture(val, idx)
+        return val && val.type === 'image' && this.loadImageTexture(val, idx)
       })
     )
   }
@@ -121,22 +122,19 @@ export default class Shadertoy {
   }
   initFramebuffer(buffers) {
     buffers.forEach(val => {
-      this.creatFramebufferTextureObj(val.ID)
-      if (val.circulation) {
-        this.creatFramebufferTextureObj(val.ID + '_Copy', true)
-      }
+      this.creatFramebufferTextureMap(val.ID)
+      val.circulation && this.creatFramebufferTextureMap(`${val.ID}_${Shadertoy._randomStr}`)
     })
   }
-  creatFramebufferTextureObj(id, flag) {
+  creatFramebufferTextureMap(id) {
     let gl = this.gl
-
     let tt = Shadertoy.createTargetTexture(
       gl,
       this.width,
       this.height,
     )
     let fs = Shadertoy.createFramebuffers(gl, tt)
-    Shadertoy.framebufferTextureObj[id] = {
+    Shadertoy.framebufferTextureMap[id] = {
       texture: tt,
       framebuffer: fs
     }
@@ -145,9 +143,7 @@ export default class Shadertoy {
   initProgram(gl, main, buffers) {
     buffers &&
       buffers.forEach(val => {
-        this.bufferShaderArr.push(
-          Shadertoy.ininShader(gl, val.fragmentStr, val.depTextureArr)
-        )
+        this.bufferShaderMap[val.ID] = Shadertoy.ininShader(gl, val.fragmentStr, val.depTextureArr)
       })
 
     this.mainShader = Shadertoy.ininShader(
@@ -179,7 +175,9 @@ export default class Shadertoy {
       this.gl,
       `void mainImage( out vec4 fragColor, in vec2 fragCoord )
     {
-      fragColor = vec4(texture(iChannel0, fragCoord).rgb, 1.0);
+      vec2 uv = fragCoord.xy / iResolution.xy;
+
+      fragColor = vec4(texture(iChannel0, uv).rgb, 1.0);
     }`,
       []
     )
@@ -192,15 +190,13 @@ export default class Shadertoy {
     this.time = Shadertoy.getTime() - this.time0
     this.timePreviousFrame = this.time
 
-    this.buffers.forEach((val, idx) => {
-      this.draw(
-        this.bufferShaderArr[idx],
-        Shadertoy.framebufferTextureObj[val.ID],
-        val.ID
+    this.buffers.forEach((buffer, idx) => {
+      this.drawToFramebuffer(
+        buffer
       )
     })
 
-    this.draw(this.mainShader)
+    this.drawToCanvas(this.mainShader)
     requestAnimationFrame(() => this._frame(gl))
   }
   start() {
@@ -217,21 +213,41 @@ export default class Shadertoy {
 
     this._frame(this.gl)
   }
-  draw(shader, framebufferTextureObj, ID) {
+  drawToCanvas(shader) {
     const gl = this.gl
     gl.clear(gl.COLOR_BUFFER_BIT)
 
     shader.userShader()
+    shader.textures.forEach((val, idx) => {
+      if (!val || !val.ID) return
+      let texture = Shadertoy.getTexture(val.ID)
+      gl.activeTexture(gl.TEXTURE0 + idx)
+      gl.bindTexture(gl.TEXTURE_2D, texture)
+      shader.setInt('iChannel' + idx, idx)
+    })
+    shader.setVec3('iResolution', [this.width, this.height, 0.0])
+    shader.setFloat('iTime', this.time)
+    shader.setVec4('iMouse', this.mouse)
+    shader.setVec4('iFrame', this.frame / this.time)
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, this.vertexBuffer.numItems)
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null)
+    gl.bindTexture(gl.TEXTURE_2D, null)
+  }
+  drawToFramebuffer(buffer) {
+    const gl = this.gl
+    const shader = this.bufferShaderMap[buffer.ID]
+    const framebufferAndTexObj = Shadertoy.framebufferTextureMap[buffer.ID]
+    gl.clear(gl.COLOR_BUFFER_BIT)
 
+    shader.userShader()
 
-
-    if (framebufferTextureObj) {
-      gl.bindFramebuffer(gl.FRAMEBUFFER, framebufferTextureObj.framebuffer)
+    if (framebufferAndTexObj) {
+      gl.bindFramebuffer(gl.FRAMEBUFFER, framebufferAndTexObj.framebuffer)
     }
 
     shader.textures.forEach((val, idx) => {
       if (!val.type) return
-      let texture = Shadertoy.getTexture(val.ID)
+      let texture = Shadertoy.getTexture(buffer.ID === val.ID ? `${val.ID}_${Shadertoy._randomStr}` : val.ID)
       gl.activeTexture(gl.TEXTURE0 + idx)
       gl.bindTexture(gl.TEXTURE_2D, texture)
       shader.setInt('iChannel' + idx, idx)
@@ -244,8 +260,8 @@ export default class Shadertoy {
 
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, this.vertexBuffer.numItems)
 
-    if (ID === 'Buffer_A') {
-      let fto = Shadertoy.framebufferTextureObj[`${ID}_Copy`]
+    if (buffer.circulation) {
+      let fto = Shadertoy.framebufferTextureMap[`${buffer.ID}_${Shadertoy._randomStr}`]
       Shadertoy.copyTex(
         this.gl,
         fto,
@@ -257,7 +273,7 @@ export default class Shadertoy {
     gl.bindFramebuffer(gl.FRAMEBUFFER, null)
     gl.bindTexture(gl.TEXTURE_2D, null)
   }
-  loadTexture(sourceObj, idx) {
+  loadImageTexture(sourceObj, idx) {
     if (!sourceObj.path) return
     return new Promise((resolve, rejcet) => {
       var texture = this.gl.createTexture()
@@ -321,8 +337,13 @@ export default class Shadertoy {
   static getTexture(ID) {
     return (
       Shadertoy.imageTextureObj[ID] ||
-      Shadertoy.framebufferTextureObj[ID].texture
+      Shadertoy.framebufferTextureMap[ID].texture
     )
+  }
+  static generateRandomAlphaNum(len) {
+    var rdmString = "";
+    for (; rdmString.length < len; rdmString += Math.random().toString(36).substr(2));
+    return rdmString.substr(0, len);
   }
   static genFragmentShader(fragmentShaderStr) {
     return `#version 300 es

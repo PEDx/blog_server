@@ -19,7 +19,6 @@ export default class Article extends Component {
             {
               fragmentStr: bufferA,
               ID: 'Buffer_A',
-              circulation: true,
               depTextureArr: [
                 {
                   type: 'image',
@@ -42,7 +41,7 @@ export default class Article extends Component {
                 },
                 {
                   type: 'framebuffer',
-                  ID: 'Buffer_A_Copy',
+                  ID: 'Buffer_A',
                   option: {
                     filter: 'linear',
                     wrap: 'clamp'
@@ -56,7 +55,7 @@ export default class Article extends Component {
               depTextureArr: [
                 {
                   type: 'framebuffer',
-                  ID: 'Buffer_A_Copy',
+                  ID: 'Buffer_A',
                   option: {
                     filter: 'linear',
                     wrap: 'clamp'
@@ -98,28 +97,14 @@ export default class Article extends Component {
             depTextureArr: [
               {
                 type: 'framebuffer',
-                ID: 'Buffer_A_Copy',
+                ID: 'Buffer_A',
                 option: {
                   filter: 'linear',
                   wrap: 'clamp'
                 }
               },
-              {
-                type: 'framebuffer',
-                ID: 'Buffer_B',
-                option: {
-                  filter: 'linear',
-                  wrap: 'clamp'
-                }
-              },
-              {
-                type: 'framebuffer',
-                ID: 'Buffer_A_Copy',
-                option: {
-                  filter: 'linear',
-                  wrap: 'clamp'
-                }
-              },
+              null,
+              null,
               {
                 type: 'framebuffer',
                 ID: 'Buffer_D',
