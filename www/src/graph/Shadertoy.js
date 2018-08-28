@@ -246,7 +246,7 @@ export default class Shadertoy {
     shader.setVec3('iResolution', [this.width, this.height, 0.0])
     shader.setFloat('iTime', this.time)
     shader.setVec4('iMouse', this.mouse)
-    shader.setVec4('iFrame', this.frame / this.time)
+    shader.setFloat('iFrame', this.frame / this.time)
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, this.vertexBuffer.numItems)
     gl.bindFramebuffer(gl.FRAMEBUFFER, null)
     gl.bindTexture(gl.TEXTURE_2D, null)
@@ -274,7 +274,7 @@ export default class Shadertoy {
     shader.setVec3('iResolution', [this.width, this.height, 0.0])
     shader.setFloat('iTime', this.time)
     shader.setVec4('iMouse', this.mouse)
-    shader.setVec4('iFrame', this.frame / this.time)
+    shader.setFloat('iFrame', this.frame / this.time)
 
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, this.vertexBuffer.numItems)
 
@@ -375,6 +375,7 @@ export default class Shadertoy {
     uniform vec3 iResolution;
     uniform float iTime;
     uniform vec4 iMouse;
+    uniform float iFrame;
     uniform sampler2D iChannel0;
     uniform sampler2D iChannel1;
     uniform sampler2D iChannel2;
