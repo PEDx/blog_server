@@ -5,5 +5,5 @@ import Layout from "./pages/layout"
 export default () => (
   <BrowserRouter>
       <Route path="/" component={Layout} />
-  </BrowserRouter >
+  </BrowserRouter>
 );
