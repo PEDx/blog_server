@@ -35,7 +35,7 @@ export default class Shadertoy {
     if (debug) {
       this.initDebugMode()
     }
-
+    this.debugMode = !!debug
     this.getExtension(this.gl)
 
     this.running = false
@@ -182,17 +182,18 @@ export default class Shadertoy {
           float divide = 4.0;
           float _X = 1.0 / divide;
           float _Y = 1.0 / divide;
-          float gap = 0.001;
+          float gapY = 1.0 / iResolution.y;
+          float gapX = 1.0 / iResolution.x;
 
           if(uv.x < _X && uv.y < _Y) {
               color1 = vec4(texture(iChannel0, uv * divide).rgb, 1.0);
-          }else if(uv.x < _X && uv.y >= _Y + gap && uv.y < 2.0 * _Y) {
+          }else if(uv.x < _X && uv.y >= _Y + gapY && uv.y < 2.0 * _Y) {
               color1 = vec4(texture(iChannel1, vec2(uv.x, uv.y - 0.25)  * divide ).rgb, 1.0);
-          }else if(uv.x < _X && uv.y >= 2.0 * _Y + gap&& uv.y < 3.0 * _Y) {
+          }else if(uv.x < _X && uv.y >= 2.0 * _Y + gapY&& uv.y < 3.0 * _Y) {
               color1 = vec4(texture(iChannel2, vec2(uv.x, uv.y - 0.5)  * divide ).rgb, 1.0);
-          }else if(uv.x < _X && uv.y >= 3.0 * _Y+ gap && uv.y < 4.0 * _Y) {
+          }else if(uv.x < _X && uv.y >= 3.0 * _Y+ gapY && uv.y < 4.0 * _Y) {
               color1 = vec4(texture(iChannel3, vec2(uv.x, uv.y - 0.75)  * divide ).rgb, 1.0);
-          }else if(uv.x > _X + gap){
+          }else if(uv.x > _X + gapX){
               color1 = vec4(texture(iChannel0, uv ).rgb, 1.0);
           }
           fragColor = color1;
@@ -214,7 +215,10 @@ export default class Shadertoy {
       )
     })
 
-    this.drawToCanvas(this.mainShader)
+    // this.drawToCanvas(this.mainShader)
+    if (this.debugMode)
+      this.drawDebugInfo(this.debugShader)
+    else this.drawToCanvas(this.mainShader)
     requestAnimationFrame(() => this._frame(gl))
   }
   start() {
@@ -247,6 +251,23 @@ export default class Shadertoy {
     shader.setFloat('iTime', this.time)
     shader.setVec4('iMouse', this.mouse)
     shader.setFloat('iFrame', this.frame / this.time)
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, this.vertexBuffer.numItems)
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null)
+    gl.bindTexture(gl.TEXTURE_2D, null)
+  }
+  drawDebugInfo(shader) {
+    const gl = this.gl
+    gl.clear(gl.COLOR_BUFFER_BIT)
+
+    shader.userShader()
+    this.buffers.forEach((val, idx) => {
+      if (!val || !val.ID) return
+      let texture = Shadertoy.getTexture(val.ID)
+      gl.activeTexture(gl.TEXTURE0 + idx)
+      gl.bindTexture(gl.TEXTURE_2D, texture)
+      shader.setInt('iChannel' + idx, idx)
+    })
+    shader.setVec3('iResolution', [this.width, this.height, 0.0])
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, this.vertexBuffer.numItems)
     gl.bindFramebuffer(gl.FRAMEBUFFER, null)
     gl.bindTexture(gl.TEXTURE_2D, null)
