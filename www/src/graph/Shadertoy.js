@@ -3,13 +3,13 @@ import Shader from './Shader'
 /*
   uniform vec3 iResolution;
   uniform float iTime;
-  uniform float iTimeDelta;
-  uniform float iFrame;
-  uniform float iChannelTime[4];
+  x uniform float iTimeDelta;
+  uniform int iFrame;
+  x uniform float iChannelTime[4];
   uniform vec4 iMouse;
-  uniform vec4 iDate;
-  uniform float iSampleRate;
-  uniform vec3 iChannelResolution[4];
+  x uniform vec4 iDate;
+  x uniform float iSampleRate;
+  x uniform vec3 iChannelResolution[4];
   uniform samplerXX iChanneli;
 */
 
@@ -136,7 +136,8 @@ export default class Shadertoy {
     let fs = Shadertoy.createFramebuffers(gl, tt)
     Shadertoy.framebufferTextureMap[id] = {
       texture: tt,
-      framebuffer: fs
+      framebuffer: fs,
+      size: [this.width, this.height]
     }
   }
 
@@ -215,7 +216,6 @@ export default class Shadertoy {
       )
     })
 
-    // this.drawToCanvas(this.mainShader)
     if (this.debugMode)
       this.drawDebugInfo(this.debugShader)
     else this.drawToCanvas(this.mainShader)
@@ -242,15 +242,16 @@ export default class Shadertoy {
     shader.userShader()
     shader.textures.forEach((val, idx) => {
       if (!val || !val.ID) return
-      let texture = Shadertoy.getTexture(val.ID)
+      let textureObj = Shadertoy.getTexture(val.ID)
       gl.activeTexture(gl.TEXTURE0 + idx)
-      gl.bindTexture(gl.TEXTURE_2D, texture)
+      gl.bindTexture(gl.TEXTURE_2D, textureObj.texture)
       shader.setInt('iChannel' + idx, idx)
+      shader.setVec3('iChannelResolution[' + idx + ']', [textureObj.size[0], textureObj.size[1], 0.0])
     })
     shader.setVec3('iResolution', [this.width, this.height, 0.0])
     shader.setFloat('iTime', this.time)
     shader.setVec4('iMouse', this.mouse)
-    shader.setFloat('iFrame', this.frame / this.time)
+    shader.setInt('iFrame', this.frame / this.time)
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, this.vertexBuffer.numItems)
     gl.bindFramebuffer(gl.FRAMEBUFFER, null)
     gl.bindTexture(gl.TEXTURE_2D, null)
@@ -262,10 +263,11 @@ export default class Shadertoy {
     shader.userShader()
     this.buffers.forEach((val, idx) => {
       if (!val || !val.ID) return
-      let texture = Shadertoy.getTexture(val.ID)
+      let textureObj = Shadertoy.getTexture(val.ID)
       gl.activeTexture(gl.TEXTURE0 + idx)
-      gl.bindTexture(gl.TEXTURE_2D, texture)
+      gl.bindTexture(gl.TEXTURE_2D, textureObj.texture)
       shader.setInt('iChannel' + idx, idx)
+      shader.setVec3('iChannelResolution[' + idx + ']', [textureObj.size[0], textureObj.size[1], 0.0])
     })
     shader.setVec3('iResolution', [this.width, this.height, 0.0])
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, this.vertexBuffer.numItems)
@@ -286,16 +288,17 @@ export default class Shadertoy {
 
     shader.textures.forEach((val, idx) => {
       if (!val.type) return
-      let texture = Shadertoy.getTexture(buffer.ID === val.ID ? `${val.ID}_${Shadertoy._randomStr}` : val.ID)
+      let textureObj = Shadertoy.getTexture(buffer.ID === val.ID ? `${val.ID}_${Shadertoy._randomStr}` : val.ID)
       gl.activeTexture(gl.TEXTURE0 + idx)
-      gl.bindTexture(gl.TEXTURE_2D, texture)
+      gl.bindTexture(gl.TEXTURE_2D, textureObj.texture)
       shader.setInt('iChannel' + idx, idx)
+      shader.setVec3('iChannelResolution[' + idx + ']', [textureObj.size[0], textureObj.size[1], 0.0])
     })
 
     shader.setVec3('iResolution', [this.width, this.height, 0.0])
     shader.setFloat('iTime', this.time)
     shader.setVec4('iMouse', this.mouse)
-    shader.setFloat('iFrame', this.frame / this.time)
+    shader.setInt('iFrame', this.frame / this.time)
 
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, this.vertexBuffer.numItems)
 
@@ -333,7 +336,7 @@ export default class Shadertoy {
         )
         Shadertoy.setTexParam(this.gl, 'image')
         gl.bindTexture(gl.TEXTURE_2D, null)
-        Shadertoy.imageTextureObj[sourceObj.ID] = texture
+        Shadertoy.imageTextureObj[sourceObj.ID] = { texture: texture, size: [texture.image.width, texture.image.height] }
         resolve()
       }
       texture.image.src = sourceObj.path
@@ -374,9 +377,10 @@ export default class Shadertoy {
   }
 
   static getTexture(ID) {
+    // debugger
     return (
       Shadertoy.imageTextureObj[ID] ||
-      Shadertoy.framebufferTextureMap[ID].texture
+      Shadertoy.framebufferTextureMap[ID]
     )
   }
   static generateRandomAlphaNum(len) {
@@ -396,11 +400,12 @@ export default class Shadertoy {
     uniform vec3 iResolution;
     uniform float iTime;
     uniform vec4 iMouse;
-    uniform float iFrame;
+    uniform int iFrame;
     uniform sampler2D iChannel0;
     uniform sampler2D iChannel1;
     uniform sampler2D iChannel2;
     uniform sampler2D iChannel3;
+    uniform vec3 iChannelResolution[4];
 
 
     ${fragmentShaderStr}

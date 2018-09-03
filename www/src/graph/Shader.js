@@ -7,10 +7,10 @@ export default class Shader{
     this.gl.useProgram(this.ID)
   }
   setVec3(name, vec3) {
-    this.gl.uniform3f(this.gl.getUniformLocation(this.ID, name), vec3[0], vec3[1], vec3[2]);
+    this.gl.uniform3fv(this.gl.getUniformLocation(this.ID, name), vec3);
   }
   setVec4(name, vec4) {
-    this.gl.uniform4f(this.gl.getUniformLocation(this.ID, name), vec4[0], vec4[1], vec4[2], vec4[3]);
+    this.gl.uniform4fv(this.gl.getUniformLocation(this.ID, name), vec4);
   }
   setFloat(name, float) {
     this.gl.uniform1f(this.gl.getUniformLocation(this.ID, name), float);

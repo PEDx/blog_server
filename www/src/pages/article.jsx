@@ -2,13 +2,13 @@ import React, { Component } from 'react'
 
 import Shadertoy from '../components/ShadertoyComponent'
 import texture00 from '../assets/img/texture01.png'
-import texture01 from '../assets/img/texture00.jpg'
+// import texture01 from '../assets/img/texture00.jpg'
 
-import bufferA from '../graph/Gargantua/Buffer_A.fs'
-import bufferB from '../graph/Gargantua/Buffer_B.fs'
-import bufferC from '../graph/Gargantua/Buffer_C.fs'
-import bufferD from '../graph/Gargantua/Buffer_D.fs'
-import main from '../graph/Gargantua/Image.fs'
+import bufferA from '../graph/Spilled/Buffer_A.fs'
+// import bufferB from '../graph/Gargantua/Buffer_B.fs'
+// import bufferC from '../graph/Gargantua/Buffer_C.fs'
+// import bufferD from '../graph/Gargantua/Buffer_D.fs'
+import main from '../graph/Spilled/Image.fs'
 
 export default class Article extends Component {
   render() {
@@ -21,6 +21,14 @@ export default class Article extends Component {
               ID: 'Buffer_A',
               depTextureArr: [
                 {
+                  type: 'framebuffer',
+                  ID: 'Buffer_A',
+                  option: {
+                    filter: 'linear',
+                    wrap: 'clamp'
+                  }
+                },
+                {
                   type: 'image',
                   ID: texture00,
                   path: texture00,
@@ -29,68 +37,17 @@ export default class Article extends Component {
                     wrap: 'repeat'
                   }
                 },
-                {
-                  type: 'image',
-                  ID: texture01,
-                  path: texture01,
-                  format: 'RGB',
-                  option: {
-                    filter: 'mipmap',
-                    wrap: 'repeat'
-                  }
-                },
-                {
-                  type: 'framebuffer',
-                  ID: 'Buffer_A',
-                  option: {
-                    filter: 'linear',
-                    wrap: 'clamp'
-                  }
-                }
+                // {
+                //   type: 'image',
+                //   ID: texture01,
+                //   path: texture01,
+                //   option: {
+                //     filter: 'mipmap',
+                //     wrap: 'repeat'
+                //   }
+                // },
               ]
             },
-            {
-              fragmentStr: bufferB,
-              ID: 'Buffer_B',
-              depTextureArr: [
-                {
-                  type: 'framebuffer',
-                  ID: 'Buffer_A',
-                  option: {
-                    filter: 'linear',
-                    wrap: 'clamp'
-                  }
-                }
-              ]
-            },
-            {
-              fragmentStr: bufferC,
-              ID: 'Buffer_C',
-              depTextureArr: [
-                {
-                  type: 'framebuffer',
-                  ID: 'Buffer_B',
-                  option: {
-                    filter: 'linear',
-                    wrap: 'clamp'
-                  }
-                }
-              ]
-            },
-            {
-              fragmentStr: bufferD,
-              ID: 'Buffer_D',
-              depTextureArr: [
-                {
-                  type: 'framebuffer',
-                  ID: 'Buffer_C',
-                  option: {
-                    filter: 'linear',
-                    wrap: 'clamp'
-                  }
-                }
-              ]
-            }
           ]}
           main={{
             fragmentStr: main,
@@ -103,30 +60,6 @@ export default class Article extends Component {
                   wrap: 'clamp'
                 }
               },
-              {
-                type: 'framebuffer',
-                ID: 'Buffer_B',
-                option: {
-                  filter: 'linear',
-                  wrap: 'clamp'
-                }
-              },
-              {
-                type: 'framebuffer',
-                ID: 'Buffer_C',
-                option: {
-                  filter: 'linear',
-                  wrap: 'clamp'
-                }
-              },
-              {
-                type: 'framebuffer',
-                ID: 'Buffer_D',
-                option: {
-                  filter: 'linear',
-                  wrap: 'clamp'
-                }
-              }
             ]
           }}
         />

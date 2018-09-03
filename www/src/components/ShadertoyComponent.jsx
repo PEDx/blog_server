@@ -19,7 +19,7 @@ export default class ShadertoyComponent extends Component {
       this.canvasElement,
       this.main,
       this.buffers,
-      true
+      false
     )
     st.init().then((res) => {
       st.start()
