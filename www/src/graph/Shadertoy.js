@@ -21,7 +21,7 @@ const vertexShader = `#version 300 es
     }`
 export default class Shadertoy {
   // 图片纹理合集
-  static imageTextureObj = {}
+  static imageTextureMap = {}
   // 帧缓冲纹理合集
   static framebufferTextureMap = {}
 
@@ -336,7 +336,7 @@ export default class Shadertoy {
         )
         Shadertoy.setTexParam(this.gl, 'image')
         gl.bindTexture(gl.TEXTURE_2D, null)
-        Shadertoy.imageTextureObj[sourceObj.ID] = { texture: texture, size: [texture.image.width, texture.image.height] }
+        Shadertoy.imageTextureMap[sourceObj.ID] = { texture: texture, size: [texture.image.width, texture.image.height] }
         resolve()
       }
       texture.image.src = sourceObj.path
@@ -379,7 +379,7 @@ export default class Shadertoy {
   static getTexture(ID) {
     // debugger
     return (
-      Shadertoy.imageTextureObj[ID] ||
+      Shadertoy.imageTextureMap[ID] ||
       Shadertoy.framebufferTextureMap[ID]
     )
   }
