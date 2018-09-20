@@ -2,20 +2,20 @@ import React, { Component } from 'react';
 import { Link, Route, Switch, Redirect } from "react-router-dom";
 import { Avatar, Menu, Dropdown } from 'antd';
 import 'antd/lib/style/index.css';
-import asyncComponent from '../components/AsyncComponent'
+// import asyncComponent from '../components/AsyncComponent'
 import logo from "../assets/logo.svg"
-import style from "../style/layout.css"
+import "../style/layout.css"
 
 
 import Home from "./home"
 
-const User = asyncComponent(() => import("./user"));
-const Login = asyncComponent(() => import("./login"));
-const Team = asyncComponent(() => import("./team"));
-const Blog = asyncComponent(() => import("./blog"));
-const DataLab = asyncComponent(() => import("./dataLab"));
-const Article = asyncComponent(() => import("./article"));
-const Tools = asyncComponent(() => import("./tools"));
+import User from "./user"
+import Login from "./login"
+import Graph from "./graph"
+import Blog from "./blog"
+import DataLab from "./dataLab"
+import Article from "./article"
+import Tools from "./tools"
 
 const menu = function () {
   return (
@@ -53,20 +53,20 @@ class App extends Component {
 
   render() {
     return (
-      <div id={style.index}>
-        <header className={style.nav}>
-          <div className={style.logo_box + ' f-fl'}>
-            <img src={logo} className={style.logo} alt="logo" />
+      <div className="app-layout">
+        <header className="app-layout-nav">
+          <div className="app-layout-nav-box f-fl">
+            <img src={logo} className="app-layout-nav-logo" alt="logo" />
           </div>
           <ul>
             <li><Link to="/home">首页</Link></li>
             <li><Link to="/blog">博客</Link></li>
-            <li><Link to="/team">图形</Link></li>
-            <li><Link to="/dataLab">数据实验室<span className={style.badge}>α</span></Link></li>
+            <li><Link to="/graph">图形</Link></li>
+            <li><Link to="/dataLab">数据实验室<span className="app-layout-nav-badge">α</span></Link></li>
           </ul>
-          <div className={style.user}>
+          <div className="app-layout-nav-user">
             {
-              !this.state.userLogo && (<div className={style.login}>
+              !this.state.userLogo && (<div className="app-layout-nav-login">
                 <Link to="/login">登录</Link>
               </div>)
             }
@@ -90,7 +90,7 @@ class App extends Component {
             <Route exact path="/" render={() => (<Redirect to="/home" />)} />
             <Route path="/home" component={Home} />
             <Route path="/user" component={User} />
-            <Route path="/team" component={Team} />
+            <Route path="/graph" component={Graph} />
             <Route path="/dataLab" component={DataLab} />
             <Route path="/blog" component={Blog} />
             <Route path="/tools" component={Tools} />

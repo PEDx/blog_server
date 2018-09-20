@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 import { Card, Avatar, Row, Col } from 'antd';
-import style from '../style/blog.css';
+import '../style/blog.css';
 
 const { Meta } = Card;
 
@@ -15,9 +15,9 @@ class App extends Component {
   }
   render() {
     return (
-      <div className="blog">
-        <div className={style.blog_list}>
-          <ul className={style.archive}>
+      <div className="app-blog">
+        <div className="app-blog">
+          <ul className="app-blog-archive">
             {
               ['前端', '后端', "运维", "日常", "其他"].map((val, idx) => {
                 return (<li key={idx}>{val}</li>)

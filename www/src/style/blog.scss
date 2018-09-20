@@ -1,11 +1,11 @@
 @import "./color.scss";
-.blog_list {
+.app-blog {
   position: relative;
   max-width: 1000px;
   min-width: 800px;
   margin: 0 auto;
   padding: 20px 0;
-  .archive {
+  .app-blog-archive {
     position: fixed;
     top: 10;
     width: 80px;

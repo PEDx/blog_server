@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 class App extends Component {
   render() {
     return (
-      <div className="user">
+      <div className="app-user">
         <header className="app_sap">
           <h1 className="app_sap_title">Welcome to user</h1>
         </header>

@@ -1,9 +1,9 @@
-#index {
+.app-layout {
   height: 100%;
   padding-top: 60px; }
-  #index .logo {
+  .app-layout .app-layout-nav-logo {
     height: 40px; }
-  #index > header {
+  .app-layout > header {
     position: fixed;
     top: 0;
     z-index: 99;
@@ -14,15 +14,15 @@
     font-weight: bold;
     display: flex;
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1); }
-    #index > header > ul {
+    .app-layout > header > ul {
       height: 60px;
       line-height: 60px;
       margin: 0 auto; }
-      #index > header > ul li {
+      .app-layout > header > ul li {
         font-size: 0.75rem;
         display: inline-block;
         margin-right: 20px; }
-    #index > header .badge {
+    .app-layout > header .app-layout-nav-badge {
       display: inline-block;
       position: relative;
       top: -10px;
@@ -33,18 +33,18 @@
       line-height: 12px;
       color: #fff;
       background-color: #993955; }
-  #index .logo_box {
+  .app-layout .app-layout-nav-box {
     height: 60px;
     line-height: 60px;
     margin-left: 40px; }
-  #index .login {
+  .app-layout .app-layout-nav-login {
     font-size: 0.75rem;
     text-align: center; }
-  #index a {
+  .app-layout a {
     color: #9C9C9C; }
-    #index a:hover {
+    .app-layout a:hover {
       color: #d1dbe7; }
-  #index .user {
+  .app-layout .app-layout-nav-user {
     position: relative;
     height: 60px;
     line-height: 60px;

@@ -1,11 +1,11 @@
 @import "./color.scss";
 
 
-#login {
+.app-login {
   height: 100%;
   width: 100%;
   padding-top: 100px;
-  .ct_box {
+  .app-login-box {
     position: relative;
     width: 500px;
     height: 400px;
@@ -14,7 +14,7 @@
     box-shadow: 0 2px 12px 0 #0000001a;
     background-color: #fff;
     border-radius: 5px;
-    .nav {
+    .app-login-nav {
       font-size: 16px;
       margin-bottom: 30px;
       ul {
@@ -32,18 +32,18 @@
           border-radius: 0 5px 0 0;
           margin-left: 5px;
         }
-        .active {
+        .app-login-active {
           color: #333;
           background-color: #fff;
         }
       }
     }
-    .form_item {
+    .app-login-form-item {
       width: 300px;
       margin: 0 auto;
       margin-bottom: 20px;
     }
-    .confirm {
+    .app-login-confirm {
       position: absolute;
       bottom: 30px;
       left: 50%;

@@ -1,8 +1,8 @@
 @import "./color.scss";
-#index {
+.app-layout {
   height: 100%;
   padding-top: 60px;
-  .logo {
+  .app-layout-nav-logo {
     height: 40px;
   }
   &>header {
@@ -26,7 +26,7 @@
         margin-right: 20px;
       }
     }
-    .badge {
+    .app-layout-nav-badge {
       display: inline-block;
       position: relative;
       top: -10px;
@@ -39,12 +39,12 @@
       background-color: $red_middle;
     }
   }
-  .logo_box {
+  .app-layout-nav-box {
     height: 60px;
     line-height: 60px;
     margin-left: 40px;
   }
-  .login {
+  .app-layout-nav-login {
     font-size: 0.75rem;
     text-align: center;
   }
@@ -54,7 +54,7 @@
       color: $white_sky;
     }
   }
-  .user {
+  .app-layout-nav-user {
     position: relative;
     height: 60px;
     line-height: 60px;

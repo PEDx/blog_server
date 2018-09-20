@@ -43,7 +43,7 @@ const cssFilename = 'static/css/[name].[contenthash:8].css';
 // To have this structure working with relative paths, we have to use custom options.
 const extractTextPluginOptions = shouldUseRelativeAssetPaths
   ? // Making sure that the publicPath goes back to to build folder.
-  { publicPath: Array(cssFilename.split('/').length).join('../') }
+    { publicPath: Array(cssFilename.split('/').length).join('../') }
   : {};
 
 // This is the production configuration.
@@ -173,7 +173,6 @@ module.exports = {
           // in the main CSS file.
           {
             test: /\.css$/,
-            exclude: /node_modules|antd|main\.css/,
             loader: ExtractTextPlugin.extract(
               Object.assign(
                 {
@@ -190,8 +189,6 @@ module.exports = {
                         importLoaders: 1,
                         minimize: true,
                         sourceMap: shouldUseSourceMap,
-                        modules: true,
-                        localIdentName: '[name]__[local]__[hash:base64:5]',
                       },
                     },
                     {
@@ -221,54 +218,10 @@ module.exports = {
             ),
             // Note: this won't work without `new ExtractTextPlugin()` in `plugins`.
           },
-          {
-            test: /\.css$/,
-            include: /node_modules|antd|main\.css/,
-            loader: ExtractTextPlugin.extract(
-              Object.assign(
-                {
-                  fallback: {
-                    loader: require.resolve('style-loader'),
-                    options: {
-                      hmr: false,
-                    },
-                  },
-                  use: [
-                    {
-                      loader: require.resolve('css-loader'),
-                      options: {
-                        importLoaders: 1,
-                        minimize: true,
-                        sourceMap: shouldUseSourceMap,
-                        // modules: true,
-                      },
-                    },
-                    {
-                      loader: require.resolve('postcss-loader'),
-                      options: {
-                        // Necessary for external CSS imports to work
-                        // https://github.com/facebookincubator/create-react-app/issues/2677
-                        ident: 'postcss',
-                        plugins: () => [
-                          require('postcss-flexbugs-fixes'),
-                          autoprefixer({
-                            browsers: [
-                              '>1%',
-                              'last 4 versions',
-                              'Firefox ESR',
-                              'not ie < 9', // React doesn't support IE8 anyway
-                            ],
-                            flexbox: 'no-2009',
-                          }),
-                        ],
-                      },
-                    },
-                  ],
-                },
-                extractTextPluginOptions
-              )
-            ),
-          },
+          // "file" loader makes sure assets end up in the `build` folder.
+          // When you `import` an asset, you get its filename.
+          // This loader doesn't use a "test" so it will catch all modules
+          // that fall through the other loaders.
           {
             test: [/\.fs$/, /\.vs$/],
             loader: require.resolve('raw-loader'),
@@ -276,10 +229,6 @@ module.exports = {
               name: 'static/shader/[name].[hash:8].[ext]',
             },
           },
-          // "file" loader makes sure assets end up in the `build` folder.
-          // When you `import` an asset, you get its filename.
-          // This loader doesn't use a "test" so it will catch all modules
-          // that fall through the other loaders.
           {
             loader: require.resolve('file-loader'),
             // Exclude `js` files to keep "css" loader working as it injects
