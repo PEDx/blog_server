@@ -11,6 +11,118 @@
     -->
   <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
   <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
+  <style>
+    .pre-anim-cube-grid {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      margin: auto;
+      left: 0;
+      right: 0;
+      top: 30%;
+    }
+
+    .pre-anim-cube-grid .pre-anim-cube {
+      width: 33%;
+      height: 33%;
+      float: left;
+      -webkit-animation: pre-anim-cubeGridScaleDelay 1.3s infinite ease-in-out;
+      animation: pre-anim-cubeGridScaleDelay 1.3s infinite ease-in-out;
+      text-align: center;
+      line-height: 14px;
+      color: #fff;
+    }
+
+    .pre-anim-cube-grid .pre-anim-cube1 {
+      -webkit-animation-delay: 0.2s;
+      animation-delay: 0.2s;
+      background-image: linear-gradient(to right, #b8cbb8 0%, #b8cbb8 0%, #b465da 0%, #cf6cc9 100%);
+
+    }
+
+    .pre-anim-cube-grid .pre-anim-cube2 {
+      -webkit-animation-delay: 0.3s;
+      animation-delay: 0.3s;
+      background-image: linear-gradient(to right, #b8cbb8 0%, #b8cbb8 0%, #cf6cc9 0%, #ee609c 100%);
+
+    }
+
+    .pre-anim-cube-grid .pre-anim-cube3 {
+      -webkit-animation-delay: 0.4s;
+      animation-delay: 0.4s;
+      background-image: linear-gradient(to right, #b8cbb8 0%, #b8cbb8 0%, #ee609c 0%, #ee609c 100%);
+    }
+
+    .pre-anim-cube-grid .pre-anim-cube4 {
+      -webkit-animation-delay: 0.1s;
+      animation-delay: 0.1s;
+      background-image: linear-gradient(to right, #b8cbb8 0%, #b8cbb8 0%, #b465da 0%, #cf6cc9 100%);
+    }
+
+    .pre-anim-cube-grid .pre-anim-cube5 {
+      -webkit-animation-delay: 0.2s;
+      animation-delay: 0.2s;
+      background-image: linear-gradient(to right, #b8cbb8 0%, #b8cbb8 0%, #cf6cc9 0%, #ee609c 100%);
+    }
+
+    .pre-anim-cube-grid .pre-anim-cube6 {
+      -webkit-animation-delay: 0.3s;
+      animation-delay: 0.3s;
+      background-image: linear-gradient(to right, #b8cbb8 0%, #b8cbb8 0%, #ee609c 0%, #ee609c 100%);
+    }
+
+    .pre-anim-cube-grid .pre-anim-cube7 {
+      -webkit-animation-delay: 0s;
+      animation-delay: 0s;
+      background-image: linear-gradient(to right, #b8cbb8 0%, #b8cbb8 0%, #b465da 0%, #cf6cc9 100%);
+    }
+
+    .pre-anim-cube-grid .pre-anim-cube8 {
+      -webkit-animation-delay: 0.1s;
+      animation-delay: 0.1s;
+      background-image: linear-gradient(to right, #b8cbb8 0%, #b8cbb8 0%, #cf6cc9 0%, #ee609c 100%);
+    }
+
+    .pre-anim-cube-grid .pre-anim-cube9 {
+      -webkit-animation-delay: 0.2s;
+      animation-delay: 0.2s;
+      background-image: linear-gradient(to right, #b8cbb8 0%, #b8cbb8 0%, #ee609c 0%, #ee609c 100%);
+    }
+
+    @-webkit-keyframes pre-anim-cubeGridScaleDelay {
+
+      0%,
+      70%,
+      100% {
+        -webkit-transform: scale3D(1, 1, 1);
+        transform: scale3D(1, 1, 1);
+        opacity: 1;
+      }
+
+      35% {
+        -webkit-transform: scale3D(0, 0, 1);
+        transform: scale3D(0, 0, 1);
+        opacity: .2;
+      }
+    }
+
+    @keyframes pre-anim-cubeGridScaleDelay {
+
+      0%,
+      70%,
+      100% {
+        -webkit-transform: scale3D(1, 1, 1);
+        transform: scale3D(1, 1, 1);
+        opacity: 1;
+      }
+
+      35% {
+        -webkit-transform: scale3D(0, 0, 1);
+        transform: scale3D(0, 0, 1);
+        opacity: .2;
+      }
+    }
+  </style>
   <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
@@ -24,10 +136,20 @@
 </head>
 
 <body>
-  <noscript>
-    You need to enable JavaScript to run this app.
-  </noscript>
-  <div id="root"></div>
+
+  <div id="root">
+    <div class="pre-anim-cube-grid">
+      <div class="pre-anim-cube pre-anim-cube1"></div>
+      <div class="pre-anim-cube pre-anim-cube2"></div>
+      <div class="pre-anim-cube pre-anim-cube3"></div>
+      <div class="pre-anim-cube pre-anim-cube4"></div>
+      <div class="pre-anim-cube pre-anim-cube5"></div>
+      <div class="pre-anim-cube pre-anim-cube6"></div>
+      <div class="pre-anim-cube pre-anim-cube7"></div>
+      <div class="pre-anim-cube pre-anim-cube8"></div>
+      <div class="pre-anim-cube pre-anim-cube9"></div>
+    </div>
+  </div>
   <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
