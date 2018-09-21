@@ -5,9 +5,9 @@ import (
 	"blog_server/models"
 	"blog_server/pkg/auth"
 	"blog_server/pkg/errno"
-	"blog_server/pkg/token"
 
 	"github.com/astaxie/beego/validation"
+	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/lexkong/log"
 )
@@ -56,13 +56,24 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	t, err := token.Sign(c, token.Context{ID: uint64(u.ID), Username: u.Username}, "")
-	if err != nil {
-		handler.SendResponse(c, errno.ErrToken, nil)
-		return
-	}
+	//	 jwt
+	// t, err := token.Sign(c, token.Context{ID: uint64(u.ID), Username: u.Username}, "")
+	// if err != nil {
+	// 	handler.SendResponse(c, errno.ErrToken, nil)
+	// 	return
+	// }
 
-	data["token"] = t
+	// data["token"] = t
+
+	// handler.SendResponse(c, nil, data)
+
+	// session
+
+	session := sessions.Default(c)
+	login := true
+	session.Set("login", login)
+
+	session.Save()
 
 	handler.SendResponse(c, nil, data)
 }

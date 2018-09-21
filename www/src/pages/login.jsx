@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Input, Button } from 'antd';
 import "../style/login.css"
-
-class App extends Component {
+import request from "../utils/request"
+export default class  extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -23,8 +23,19 @@ class App extends Component {
       email: ""
     });
   }
+  // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1Mzc0MjU5ODEsImlkIjoxNiwibmJmIjoxNTM3NDI1OTgxLCJ1c2VybmFtZSI6InBlZCJ9.8J8QtBfwDuPPPnqB-nn3i6xnQGHKCP-myEkhnRpmOIE
+  async handleConfirm(ev) {
+    if (this.state.tabName === "login") {
+      const res = await request('login', {
+        method: "POST",
+        body: {
+          username: this.state.username,
+          password: this.state.password
+        }
+      })
+      console.log(res);
 
-  handleConfirm(ev) {
+    }
   }
   handleInput(type, event) {
     this.setState({ [type]: event.target.value })
@@ -67,5 +78,3 @@ class App extends Component {
     );
   }
 }
-
-export default App;

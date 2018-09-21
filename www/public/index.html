@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="theme-color" content="#000000">
-    <!--
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="theme-color" content="#000000">
+  <!--
       manifest.json provides metadata used when your web app is added to the
       homescreen on Android. See https://developers.google.com/web/fundamentals/engage-and-retain/web-app-manifest/
     -->
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
-    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
-    <!--
+  <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
+  <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
+  <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
       Only files inside the `public` folder can be referenced from the HTML.
@@ -19,14 +20,15 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <title>Blog</title>
-  </head>
-  <body>
-    <noscript>
-      You need to enable JavaScript to run this app.
-    </noscript>
-    <div id="root"></div>
-    <!--
+  <title>{{.user}}</title>
+</head>
+
+<body>
+  <noscript>
+    You need to enable JavaScript to run this app.
+  </noscript>
+  <div id="root"></div>
+  <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
 
@@ -36,5 +38,35 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
-  </body>
+  <script>
+    var bootstrap = {
+      "current_user": {
+        "programme_collected_num": 16,
+        "liked_num": 508,
+        "user_id": "53295318",
+        "channel_collected_num": 2,
+        "pro_expire_date": "2018.12.22",
+        "pro_status": "S",
+        "has_created_channel_songlist": false,
+        "album_collected_count": 69,
+        "name": "PED",
+        "is_tutorial_automatically_open": true,
+        "fav_artist_count": 12,
+        "played_num": 63874,
+        "is_personal_service_enabled": true,
+        "icon": "https://img1.doubanio.com\/icon\/u53295318-28.jpg",
+        "share_count": 2,
+        "has_collected_channel_songlist": true,
+        "banned_num": 8
+      },
+      "config": {
+        "audio_timout_time": 20000,
+        "audio_lag_time": 12000, "audio_max_lag_count": 10
+      },
+      "is_fm_new_user": false,
+      "can_switch_to_old_version": false
+    };
+  </script>
+</body>
+
 </html>

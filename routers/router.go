@@ -6,7 +6,10 @@ import (
 	"blog_server/handler/view"
 	"blog_server/middleware"
 	"blog_server/pkg/setting"
+	"net/http"
 
+	"github.com/gin-contrib/sessions"
+	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
 	"github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"
@@ -17,7 +20,7 @@ func InitRouter() *gin.Engine {
 
 	r.Use(gin.Logger())
 
-	r.Use(middleware.Logging())
+	r.Use(middleware.Options)
 
 	r.Use(gin.Recovery())
 
@@ -29,14 +32,19 @@ func InitRouter() *gin.Engine {
 
 	r.LoadHTMLGlob("www/build/*.html")
 
+	store := cookie.NewStore([]byte("secret"))
+	r.Use(sessions.Sessions("mysession", store))
+
 	apiv1 := r.Group("/api/v1")
 	viewRoute := r.Group("/")
 	// http.HandleFunc("/", v1.Login)
 	// 用户登录
 	apiv1.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	apiv1.POST("/login", v1.Login)
+	apiv1.POST("/user", v1.AddUser)
 
-	apiv1.Use(middleware.AuthMiddleware())
+	apiv1.Use(middleware.Logging())
+	// apiv1.Use(middleware.AuthMiddleware())
 	{
 		//获取标签列表
 		apiv1.GET("/tag", v1.GetTags)
@@ -52,22 +60,21 @@ func InitRouter() *gin.Engine {
 		// 用户
 		apiv1.GET("/user", v1.GetUser)
 		// 添加用户
-		apiv1.POST("/user", v1.AddUser)
 		// 编辑用户
 		apiv1.PUT("/user/:id", v1.EditUser)
 		// 删除用户
 		apiv1.DELETE("/user/:id", v1.DeleteUser)
 	}
 
-	{
-		viewRoute.GET("/", view.Index)
-		viewRoute.GET("/blog", view.Index)
-		viewRoute.GET("/home", view.Index)
-		viewRoute.GET("/article", view.Index)
-		viewRoute.GET("/graph", view.Index)
-		viewRoute.GET("/user", view.Index)
-		viewRoute.GET("/login", view.Index)
-		viewRoute.GET("/tools", view.Index)
+	r.GET("/test", func(c *gin.Context) {
+		c.Redirect(http.StatusMovedPermanently, "/login")
+	})
+
+	fontEndRuter := []string{"", "blog", "home", "article", "graph", "user", "tools"}
+	viewRoute.GET("/login", view.Index)
+	viewRoute.Use(middleware.SessionMiddleware())
+	for _, v := range fontEndRuter {
+		viewRoute.GET("/"+v, view.Index)
 	}
 
 	return r

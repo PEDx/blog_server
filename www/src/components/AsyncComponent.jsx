@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import Loader from "./LoaderComponent"
 
 
 export default function asyncComponent(importComponent) {
@@ -8,7 +7,7 @@ export default function asyncComponent(importComponent) {
       super(props);
 
       this.state = {
-        component: Loader
+        component: null
       };
     }
 

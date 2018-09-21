@@ -1,5 +1,8 @@
 import { notification } from 'antd';
 
+const baseUrl = "http://127.0.0.1:8000/api/v1/"
+
+
 const codeMessage = {
   200: '服务器成功返回请求的数据。',
   201: '新建或修改数据成功。',
@@ -40,8 +43,9 @@ function checkStatus(response) {
  * @return {object}           An object containing either "data" or "err"
  */
 export default function request(url, options) {
+  url = baseUrl + url
   const defaultOptions = {
-    credentials: 'include',
+    // credentials: 'omit',
   };
   const newOptions = { ...defaultOptions, ...options };
   if (
@@ -64,7 +68,6 @@ export default function request(url, options) {
       };
     }
   }
-
   return fetch(url, newOptions)
     .then(checkStatus)
     .then(response => {
@@ -77,13 +80,12 @@ export default function request(url, options) {
       // const { dispatch } = store;
       const status = e.name;
       if (status === 401) {
-        // dispatch({
-        //   type: 'login/logout',
-        // });
+        console.log(e);
+
         return;
       }
-      // if (status === 403) {
-      //   dispatch(routerRedux.push('/exception/403'));
+      // if (status === 302 || status === 301) {
+
       //   return;
       // }
       // if (status <= 504 && status >= 500) {

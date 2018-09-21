@@ -2,20 +2,20 @@ import React, { Component } from 'react';
 import { Link, Route, Switch, Redirect } from "react-router-dom";
 import { Avatar, Menu, Dropdown } from 'antd';
 import 'antd/lib/style/index.css';
-// import asyncComponent from '../components/AsyncComponent'
+import asyncComponent from '../components/AsyncComponent'
 import logo from "../assets/logo.svg"
 import "../style/layout.css"
-
+// import request from "../utils/request"
 
 import Home from "./home"
 
-import User from "./user"
-import Login from "./login"
-import Graph from "./graph"
-import Blog from "./blog"
-import DataLab from "./dataLab"
-import Article from "./article"
-import Tools from "./tools"
+const User = asyncComponent(() => import("./user"));
+const Login = asyncComponent(() => import("./login"));
+const Graph = asyncComponent(() => import("./graph"));
+const Blog = asyncComponent(() => import("./blog"));
+const DataLab = asyncComponent(() => import("./dataLab"));
+const Article = asyncComponent(() => import("./article"));
+const Tools = asyncComponent(() => import("./tools"));
 
 const menu = function () {
   return (
@@ -66,13 +66,13 @@ class App extends Component {
           </ul>
           <div className="app-layout-nav-user">
             {
-              !this.state.userLogo && (<div className="app-layout-nav-login">
+              (<div className="app-layout-nav-login">
                 <Link to="/login">登录</Link>
               </div>)
             }
             {/* <div className="message"></div> */}
             {
-              this.state.userLogo && (
+              false && (
                 <Dropdown overlay={menu.bind(this)()} placement="bottomCenter">
                   <Avatar style={{ verticalAlign: 'middle' }} size="large" >
                     {this.state.user}
