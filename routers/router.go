@@ -33,6 +33,7 @@ func InitRouter() *gin.Engine {
 	r.LoadHTMLGlob("www/build/*.html")
 
 	store := cookie.NewStore([]byte("secret"))
+
 	r.Use(sessions.Sessions("mysession", store))
 
 	apiv1 := r.Group("/api/v1")

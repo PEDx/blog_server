@@ -24,7 +24,7 @@ func Index(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.html", gin.H{
 			"title": u,
 			"name":  u,
-			"icon":  "https://img1.doubanio.com/icon/u53295318-28.jpg",
+			"icon":  "https://avatars3.githubusercontent.com/u/16054017?s=60&v=4",
 		})
 	} else {
 		c.HTML(http.StatusOK, "index.html", gin.H{"user": "noLogin"})

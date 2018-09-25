@@ -70,6 +70,13 @@ func Login(c *gin.Context) {
 	// session
 
 	session := sessions.Default(c)
+
+	session.Options(sessions.Options{
+		Path:     "/",
+		MaxAge:   86400 * 7,
+		HttpOnly: true,
+	})
+
 	login := true
 	session.Set("login", login)
 	session.Set("username", r.Username)
