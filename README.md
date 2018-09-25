@@ -1,6 +1,9 @@
 # blog_server
 Golang server (base Gin & React )
 
+## Sample
+
+![Sample](/sample.png)
 
 ```bash
 # get
@@ -13,3 +16,5 @@ curl -X PUT -H "Content-Type: application/json"  "http://127.0.0.1:8000/api/v1/t
 curl -X DELETE  "http://127.0.0.1:8000/api/v1/tag/1"
 
 ```
+
+
