@@ -437,3 +437,7 @@ body,
   height: 100%;
 }
 
+@font-face{
+  font-family: "Pinyon";
+  src: url("../assets/font/PinyonScript-Regular.ttf")
+}

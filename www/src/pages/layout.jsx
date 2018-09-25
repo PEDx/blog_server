@@ -40,8 +40,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      userLogo: "http://www.dgtle.com/uc_server/data/avatar/000/95/31/16_avatar_small.jpg",
-      user: "Edward",
+      userInfo: window.bootstrap || {}
     };
   }
   handleMouseOver() {
@@ -52,6 +51,7 @@ class App extends Component {
   }
 
   render() {
+    const { userInfo } = this.state
     return (
       <div className="app-layout">
         <header className="app-layout-nav">
@@ -66,16 +66,15 @@ class App extends Component {
           </ul>
           <div className="app-layout-nav-user">
             {
-              (<div className="app-layout-nav-login">
+              !userInfo.title && (<div className="app-layout-nav-login">
                 <Link to="/login">登录</Link>
               </div>)
             }
             {/* <div className="message"></div> */}
             {
-              false && (
+              userInfo.title && (
                 <Dropdown overlay={menu.bind(this)()} placement="bottomCenter">
-                  <Avatar style={{ verticalAlign: 'middle' }} size="large" >
-                    {this.state.user}
+                  <Avatar style={{ verticalAlign: 'middle' }} size="large" src={userInfo.icon}>
                   </Avatar>
                 </Dropdown>
               )

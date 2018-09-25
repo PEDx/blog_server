@@ -72,6 +72,7 @@ func Login(c *gin.Context) {
 	session := sessions.Default(c)
 	login := true
 	session.Set("login", login)
+	session.Set("username", r.Username)
 
 	session.Save()
 

@@ -132,7 +132,7 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-  <title>{{.user}}</title>
+  <title>{{.title}}</title>
 </head>
 
 <body>
@@ -162,32 +162,10 @@
     -->
   <script>
     var bootstrap = {
-      "current_user": {
-        "programme_collected_num": 16,
-        "liked_num": 508,
-        "user_id": "53295318",
-        "channel_collected_num": 2,
-        "pro_expire_date": "2018.12.22",
-        "pro_status": "S",
-        "has_created_channel_songlist": false,
-        "album_collected_count": 69,
-        "name": "PED",
-        "is_tutorial_automatically_open": true,
-        "fav_artist_count": 12,
-        "played_num": 63874,
-        "is_personal_service_enabled": true,
-        "icon": "https://img1.doubanio.com\/icon\/u53295318-28.jpg",
-        "share_count": 2,
-        "has_collected_channel_songlist": true,
-        "banned_num": 8
-      },
-      "config": {
-        "audio_timout_time": 20000,
-        "audio_lag_time": 12000, "audio_max_lag_count": 10
-      },
-      "is_fm_new_user": false,
-      "can_switch_to_old_version": false
-    };
+      title: {{.title}},
+      name: {{.name}},
+      icon: {{.icon}},
+    }
   </script>
 </body>
 

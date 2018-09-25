@@ -70,7 +70,7 @@ func InitRouter() *gin.Engine {
 		c.Redirect(http.StatusMovedPermanently, "/login")
 	})
 
-	fontEndRuter := []string{"", "blog", "home", "article", "graph", "user", "tools"}
+	fontEndRuter := []string{"", "blog", "home", "article", "graph", "user", "tools", "dataLab"}
 	viewRoute.GET("/login", view.Index)
 	viewRoute.Use(middleware.SessionMiddleware())
 	for _, v := range fontEndRuter {

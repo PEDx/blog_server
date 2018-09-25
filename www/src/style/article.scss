@@ -1,11 +1,75 @@
-.app-article{
+.app-article {
   min-width: 842px;
   max-width: 842px;
   margin: 0 auto;
-  .app-article-page-box{
+  overflow: hidden;
+  .app-article-page-box {
     min-width: 842px;
     min-width: 842px;
     height: 595px;
-    background-color: aquamarine;
+    // background: rgb(254, 255, 199);
+    // background-image: linear-gradient(rgba(128, 128, 128, .3) 1px, transparent 0);
+    background-size: 24px 24px;
+    margin-top: 30px;
+    box-sizing: border-box;
+    padding: 24px 40px;
+    line-height: 24px;
+    .app-article-style {
+      padding-top: 8px;
+      font-family: "CrimsonRoman", georgia, times, serif;
+    }
+    h1 {
+      font-size: 60px;
+      line-height: 96px;
+      font-family: "Pinyon", cursive;
+      margin: 4px 0 -4px;
+      text-align: center;
+      font-weight: normal;
+      position: relative;
+    }
+    h2 {
+      font-size: 18px;
+      line-height: 24px;
+      font-weight: bold;
+      text-align: center;
+      font-variant: small-caps;
+      word-spacing: .5em;
+      letter-spacing: .6em;
+      margin-top: -2px;
+    }
+    h1+p::first-letter {
+      font-family: times, serif;
+      font-size: 90px;
+      float: left; // border: 1px solid;
+    }
+    h1+p::first-letter {
+      font-family: times, serif;
+      font-size: -90px;
+      float: left;
+      line-height: .65;
+      padding: .085em 3px 0 0;
+    }
+    h1+p::first-line {
+      font-variant: small-caps;
+      letter-spacing: .15em;
+    }
+    p {
+      font-size: 18px;
+      line-height: 24px;
+    }
+    blockquote {
+      margin: 0px 20%;
+    }
+    blockquote p {
+      font-size: 18px;
+      font-style: italic;
+      line-height: 24px;
+    }
+    blockquote p::before {
+      content: "\201C"
+    }
+    blockquote p::after {
+      content: "\201D"
+    }
   }
 }

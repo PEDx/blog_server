@@ -1,9 +1,60 @@
 .app-article {
   min-width: 842px;
   max-width: 842px;
-  margin: 0 auto; }
+  margin: 0 auto;
+  overflow: hidden; }
   .app-article .app-article-page-box {
     min-width: 842px;
     min-width: 842px;
     height: 595px;
-    background-color: aquamarine; }
+    background-size: 24px 24px;
+    margin-top: 30px;
+    box-sizing: border-box;
+    padding: 24px 40px;
+    line-height: 24px; }
+    .app-article .app-article-page-box .app-article-style {
+      padding-top: 8px;
+      font-family: "CrimsonRoman", georgia, times, serif; }
+    .app-article .app-article-page-box h1 {
+      font-size: 60px;
+      line-height: 96px;
+      font-family: "Pinyon", cursive;
+      margin: 4px 0 -4px;
+      text-align: center;
+      font-weight: normal;
+      position: relative; }
+    .app-article .app-article-page-box h2 {
+      font-size: 18px;
+      line-height: 24px;
+      font-weight: bold;
+      text-align: center;
+      font-variant: small-caps;
+      word-spacing: .5em;
+      letter-spacing: .6em;
+      margin-top: -2px; }
+    .app-article .app-article-page-box h1 + p::first-letter {
+      font-family: times, serif;
+      font-size: 90px;
+      float: left; }
+    .app-article .app-article-page-box h1 + p::first-letter {
+      font-family: times, serif;
+      font-size: -90px;
+      float: left;
+      line-height: .65;
+      padding: .085em 3px 0 0; }
+    .app-article .app-article-page-box h1 + p::first-line {
+      font-variant: small-caps;
+      letter-spacing: .15em; }
+    .app-article .app-article-page-box p {
+      font-size: 18px;
+      line-height: 24px; }
+    .app-article .app-article-page-box blockquote {
+      margin: 0px 20%; }
+    .app-article .app-article-page-box blockquote p {
+      font-size: 18px;
+      font-style: italic;
+      line-height: 24px; }
+    .app-article .app-article-page-box blockquote p::before {
+      content: "\201C"; }
+    .app-article .app-article-page-box blockquote p::after {
+      content: "\201D"; }
