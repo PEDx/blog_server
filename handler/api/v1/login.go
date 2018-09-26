@@ -72,8 +72,9 @@ func Login(c *gin.Context) {
 	session := sessions.Default(c)
 
 	session.Options(sessions.Options{
-		Path:     "/",
-		MaxAge:   86400 * 7,
+		Path: "/",
+		// 七天过期
+		MaxAge:   86400 * 1,
 		HttpOnly: true,
 	})
 

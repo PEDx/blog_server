@@ -33,8 +33,9 @@ export default class  extends Component {
           password: this.state.password
         }
       })
-      console.log(res);
-
+      if(res.code === 0) {
+        this.props.history.replace(`/user`);
+      }
     }
   }
   handleInput(type, event) {
