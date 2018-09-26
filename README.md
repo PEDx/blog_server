@@ -3,6 +3,7 @@ Golang server (base Gin & React )
 
 ## Sample
 
+![Sample](/sample_zh.png)
 ![Sample](/sample.png)
 
 ```bash

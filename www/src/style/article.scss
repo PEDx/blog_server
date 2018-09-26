@@ -6,7 +6,7 @@
   .app-article-page-box {
     min-width: 842px;
     min-width: 842px;
-    height: 595px;
+    height: 842px;
     // background: rgb(254, 255, 199);
     // background-image: linear-gradient(rgba(128, 128, 128, .3) 1px, transparent 0);
     background-size: 24px 24px;
@@ -15,43 +15,55 @@
     padding: 24px 40px;
     line-height: 24px;
     .app-article-style {
-      padding-top: 8px;
-      font-family: "CrimsonRoman", georgia, times, serif;
+      // padding-top: 8px;
+      font-family: "LiSong Pro Light", georgia, times, serif;
     }
     h1 {
-      font-size: 60px;
+      font-size: 56px;
       line-height: 96px;
-      font-family: "Pinyon", cursive;
+      font-family: "STKaiti", cursive;
       margin: 4px 0 -4px;
       text-align: center;
       font-weight: normal;
       position: relative;
     }
     h2 {
-      font-size: 18px;
+      font-size: 24px;
       line-height: 24px;
       font-weight: bold;
       text-align: center;
       font-variant: small-caps;
       word-spacing: .5em;
-      letter-spacing: .6em;
+      letter-spacing: .2em;
       margin-top: -2px;
     }
 
-    h1+p::first-letter {
+
+    h3{
+      text-align: center;
+      font-size: 18px;
+      line-height: 72px;
+      padding-top: 4px;
+      // font-family: "STKaiti";
+    }
+
+    h2+p::first-letter {
       font-family: times, serif;
       font-size: 90px;
       float: left;
       line-height: .65;
       padding: .085em 3px 0 0;
     }
-    h1+p::first-line {
+    h2+p::first-line {
       font-variant: small-caps;
       letter-spacing: .15em;
     }
     p {
       font-size: 18px;
       line-height: 24px;
+      box-sizing: border-box;
+      text-indent: 2em;
+      margin-bottom: 24px;
     }
     blockquote {
       margin: 0px 20%;
@@ -66,6 +78,10 @@
     }
     blockquote p::after {
       content: "\201D"
+    }
+    q{
+      font-family: "STFangsong";
+      font-weight: 600;
     }
   }
 }

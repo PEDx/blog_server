@@ -6,44 +6,51 @@
   .app-article .app-article-page-box {
     min-width: 842px;
     min-width: 842px;
-    height: 595px;
+    height: 842px;
     background-size: 24px 24px;
     margin-top: 30px;
     box-sizing: border-box;
     padding: 24px 40px;
     line-height: 24px; }
     .app-article .app-article-page-box .app-article-style {
-      padding-top: 8px;
-      font-family: "CrimsonRoman", georgia, times, serif; }
+      font-family: "LiSong Pro Light", georgia, times, serif; }
     .app-article .app-article-page-box h1 {
-      font-size: 60px;
+      font-size: 56px;
       line-height: 96px;
-      font-family: "Pinyon", cursive;
+      font-family: "STKaiti", cursive;
       margin: 4px 0 -4px;
       text-align: center;
       font-weight: normal;
       position: relative; }
     .app-article .app-article-page-box h2 {
-      font-size: 18px;
+      font-size: 24px;
       line-height: 24px;
       font-weight: bold;
       text-align: center;
       font-variant: small-caps;
       word-spacing: .5em;
-      letter-spacing: .6em;
+      letter-spacing: .2em;
       margin-top: -2px; }
-    .app-article .app-article-page-box h1 + p::first-letter {
+    .app-article .app-article-page-box h3 {
+      text-align: center;
+      font-size: 18px;
+      line-height: 72px;
+      padding-top: 4px; }
+    .app-article .app-article-page-box h2 + p::first-letter {
       font-family: times, serif;
       font-size: 90px;
       float: left;
       line-height: .65;
       padding: .085em 3px 0 0; }
-    .app-article .app-article-page-box h1 + p::first-line {
+    .app-article .app-article-page-box h2 + p::first-line {
       font-variant: small-caps;
       letter-spacing: .15em; }
     .app-article .app-article-page-box p {
       font-size: 18px;
-      line-height: 24px; }
+      line-height: 24px;
+      box-sizing: border-box;
+      text-indent: 2em;
+      margin-bottom: 24px; }
     .app-article .app-article-page-box blockquote {
       margin: 0px 20%; }
     .app-article .app-article-page-box blockquote p {
@@ -54,3 +61,6 @@
       content: "\201C"; }
     .app-article .app-article-page-box blockquote p::after {
       content: "\201D"; }
+    .app-article .app-article-page-box q {
+      font-family: "STFangsong";
+      font-weight: 600; }
