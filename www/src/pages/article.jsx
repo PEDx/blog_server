@@ -1,4 +1,7 @@
 import React, { Component } from 'react'
+import Highlight from 'react-highlight'
+
+import "../../node_modules/highlight.js/styles/rainbow.css"
 import "../style/article.css"
 
 export default class Article extends Component {
@@ -31,6 +34,16 @@ export default class Article extends Component {
               因此思想史研究在关注典籍和形而上层面的同时，有必要从“制度化的思想”的角度考虑问题。
               而吏治问题正是传统中国各种思想在制度化时首先必须面对的关键问题之一。
             </p>
+            <Highlight language="javascript">
+            {`function compact(array) {
+  for (const value of array) {
+    if (value) {
+      result[resIndex++] = value
+    }
+  }
+}
+`}
+          </Highlight>
             <p>
               吏治之“吏”，是中国文化中一个重要范畴。作为中央集权体制下的可任免官僚，
               中国帝制时代的“吏”是其他盛行贵族制、领主制、土司制的古文明，
@@ -54,7 +67,7 @@ export default class Article extends Component {
               <q>“吏之治人心，主于一，故从一”</q>。
               所谓主于一，就是吏虽千万，其主一人，吏是中央集权帝制之产物，由此可见。
               </p>
-              <p>
+            <p>
               有趣的是，与后世常以官、民相对不同，那时的“吏民”如上所述，是与“臣民”一样并称的。而当时的两个对立范畴，一是“儒、吏”相对，二是后来的“官、吏”相对。
               </p>
           </div>

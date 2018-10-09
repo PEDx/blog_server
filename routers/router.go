@@ -20,7 +20,7 @@ func InitRouter() *gin.Engine {
 
 	r.Use(gin.Logger())
 
-	r.Use(middleware.Options)
+	r.Use(middleware.Options())
 
 	r.Use(gin.Recovery())
 
@@ -57,7 +57,7 @@ func InitRouter() *gin.Engine {
 		apiv1.DELETE("/tag/:id", v1.DeleteTag)
 
 		// 用户列表
-		apiv1.GET("/user/:username", middleware.Secure, v1.GetUserList)
+		apiv1.GET("/user/:username", middleware.Secure(), v1.GetUserList)
 		// 用户
 		apiv1.GET("/user", v1.GetUser)
 		// 添加用户

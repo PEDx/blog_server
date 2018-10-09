@@ -15,6 +15,7 @@ const Graph = asyncComponent(() => import("./graph"));
 const Blog = asyncComponent(() => import("./blog"));
 const DataLab = asyncComponent(() => import("./dataLab"));
 const Article = asyncComponent(() => import("./article"));
+const EditArticle = asyncComponent(() => import("./editArticle"));
 const Tools = asyncComponent(() => import("./tools"));
 
 const menu = function () {
@@ -94,6 +95,7 @@ class App extends Component {
             <Route path="/blog" component={Blog} />
             <Route path="/tools" component={Tools} />
             <Route path="/article" component={Article} />
+            <Route path="/editArticle" component={EditArticle} />
             <Route path="/login" component={Login} />
           </Switch>
         </div>

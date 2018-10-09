@@ -441,3 +441,7 @@ body,
   font-family: "Pinyon";
   src: url("../assets/font/PinyonScript-Regular.ttf")
 }
+
+.hljs{
+  font-family: Menlo, Monaco, 'Courier New', monospace;
+}
