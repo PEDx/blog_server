@@ -1,7 +1,6 @@
 .app-edit-article {
   min-width: 842px;
   max-width: 842px;
-  height: 800px;
+  height: 100%;
   margin: 0 auto;
-  overflow: hidden;
   padding-top: 30px; }

@@ -47,6 +47,7 @@ class App extends Component {
   handleMouseOver() {
     this.setState({ showDropMenu: true })
   }
+
   handleLogout() {
     this.setState({ userLogo: "" })
   }
@@ -84,7 +85,7 @@ class App extends Component {
         </header>
         <div style={{
           height: "100%",
-          overflow: "scroll"
+          overflowY: "scroll"
         }}>
           <Switch>
             <Route exact path="/" render={() => (<Redirect to="/home" />)} />

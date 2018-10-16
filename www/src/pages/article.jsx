@@ -34,16 +34,9 @@ export default class Article extends Component {
               因此思想史研究在关注典籍和形而上层面的同时，有必要从“制度化的思想”的角度考虑问题。
               而吏治问题正是传统中国各种思想在制度化时首先必须面对的关键问题之一。
             </p>
-            <Highlight language="javascript">
-            {`function compact(array) {
-  for (const value of array) {
-    if (value) {
-      result[resIndex++] = value
-    }
-  }
-}
-`}
-          </Highlight>
+            <Highlight className="javascript">
+                {"function foo() { return 'bar' }"}
+            </Highlight>
             <p>
               吏治之“吏”，是中国文化中一个重要范畴。作为中央集权体制下的可任免官僚，
               中国帝制时代的“吏”是其他盛行贵族制、领主制、土司制的古文明，
