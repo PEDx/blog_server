@@ -19,6 +19,13 @@ export default class extends Component {
       lang: 'javascript'
     }
     this.editorActiveEle = null
+    this.isDOM = (typeof HTMLElement === 'object') ?
+      function (obj) {
+        return obj instanceof HTMLElement;
+      } :
+      function (obj) {
+        return obj && typeof obj === 'object' && obj.nodeType === 1 && typeof obj.nodeName === 'string';
+      }
   }
   componentDidMount() {
     const editor = init({
@@ -85,27 +92,35 @@ export default class extends Component {
     pellContent.focus()
     this.editorActiveEle = pellContent.getElementsByTagName("p")[0]
     pellContent.addEventListener("mousedown", () => {
-      this.editorActiveEle = window.getSelection().focusNode
+      let node = window.getSelection().focusNode
+      this.editorActiveEle = node
+
     })
     pellContent.addEventListener("keyup", () => {
-      this.editorActiveEle = window.getSelection().focusNode
+      let node = window.getSelection().focusNode
+      this.editorActiveEle = node
     })
 
+  }
+  addOnePElement(parent) {
+    let _p = document.createElement("p")
+    _p.innerHTML = "<br/>"
+    parent.appendChild(_p)
+    this.editorActiveEle = _p
   }
   getContentHtml() {
     return this.state.html || ""
   }
   handleOk() {
     let _html = document.getElementsByClassName("hl-box")[0].innerHTML
+    let pellContent = document.getElementsByClassName("pell-content")[0]
+    if (!this.isDOM(this.editorActiveEle)) { this.addOnePElement(pellContent) }
     let focusNode = this.editorActiveEle;
     let codeNode = document.createElement("pre");
     codeNode.style.pointerEvents = "none";
     codeNode.innerHTML = _html
-    let _p = document.createElement("p")
-    _p.innerHTML = "<br/>"
-    this.editorActiveEle = _p
-    focusNode.parentNode.appendChild(_p)
-    focusNode.parentNode.replaceChild(codeNode, focusNode)
+    pellContent.replaceChild(codeNode, focusNode)
+    this.addOnePElement(pellContent)
     this.setState({
       code: "",
       visible: false
@@ -155,7 +170,8 @@ export default class extends Component {
             <Option value="cpp">C++</Option>
             <Option value="htmlbars">HTML</Option>
           </Select>
-          <TextArea rows={18} value={this.state.code} onChange={this.textChange.bind(this)} onScroll={this.onTextScroll.bind(this)} style={{
+          <TextArea rows={18} value={this.state.code} onChange={this.textChange.bind(this)} onScroll={this.onTextScroll.bind(this)}
+          style={{
             fontFamily: "'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace",
             // color: "red",
             color: "transparent",
@@ -170,8 +186,7 @@ export default class extends Component {
             whiteSpace: "nowrap",
             overflowX: "auto",
             caretColor: "#eee" /* 光标颜色 */
-          }}
-            ref={e => this.textareaEle = e} />
+          }} ref={e => this.textareaEle = e} />
           <div style={{
             width: "790px",
             height: "378px",
