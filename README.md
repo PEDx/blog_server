@@ -3,8 +3,15 @@ Golang server (base Gin & React )
 
 ## Sample
 
+
+### 编辑器
+---
 ![Sample](images/editor.png)
+### 中文排版
+---
 ![Sample](images/sample_zh.png)
+### 英文排版
+---
 ![Sample](images/sample.png)
 
 ```bash
