@@ -20,13 +20,19 @@ export default class extends Component {
       langVis: 'Javascript',
     }
     this.editorActiveEle = null
+    this.DomHandle()
+  }
+  DomHandle() {
     this.isDOM = (typeof HTMLElement === 'object') ?
       function (obj) {
         return obj instanceof HTMLElement;
       } :
       function (obj) {
-        return obj && typeof obj === 'object' && obj.nodeType === 1 && typeof obj.nodeName === 'string';
+        return obj && typeof obj === 'object' && typeof obj.nodeName === 'string';
       }
+    this.isTextNode = (node) => {
+      return this.isDOM(node) && node.nodeType === 3
+    }
   }
   componentDidMount() {
     init({
@@ -55,7 +61,14 @@ export default class extends Component {
         "quote",
         "olist",
         "ulist",
-        "line",
+        // {
+        //   icon: '&#8213;',
+        //   title: 'Horizontal Line',
+        //   result: () => {
+        //     exec('insertHorizontalRule');
+        //     exec("formatBlock", '<pre>')
+        //   }
+        // },
         {
           icon: 'code',
           title: 'code',
@@ -92,9 +105,10 @@ export default class extends Component {
     let pellContent = document.getElementsByClassName("pell-content")[0]
     pellContent.focus()
     this.editorActiveEle = pellContent.getElementsByTagName("p")[0]
-    pellContent.addEventListener("mousedown", () => {
+    pellContent.addEventListener("mouseup", () => {
       let node = window.getSelection().focusNode
       this.editorActiveEle = node
+      // console.log(node);
 
     })
     pellContent.addEventListener("keyup", () => {
@@ -103,11 +117,31 @@ export default class extends Component {
     })
 
   }
-  addOnePElement(parent) {
+  insertLastRow(parent) {
     let _p = document.createElement("p")
     _p.innerHTML = "<br/>"
     parent.appendChild(_p)
     this.editorActiveEle = _p
+  }
+  insertOneRow(targetEl) {
+    let _p = document.createElement("p")
+    _p.innerHTML = "<br/>"
+    this.insertAfter(_p, targetEl)
+    this.editorActiveEle = _p
+  }
+  insertTextAfterOneRow(targetEl) {
+    let _p = document.createElement("p")
+    _p.innerHTML = "<br/>"
+    this.insertAfter(_p, targetEl.parentNode)
+    this.editorActiveEle = _p
+  }
+  insertAfter(newEl, targetEl) {
+    var parentEl = targetEl.parentNode;
+    if (parentEl.lastChild === targetEl) {
+      parentEl.appendChild(newEl);
+    } else {
+      parentEl.insertBefore(newEl, targetEl.nextSibling);
+    }
   }
   getContentHtml() {
     return `<div class="article-content">${this.state.html}<div>` || ""
@@ -115,12 +149,28 @@ export default class extends Component {
   handleOk() {
     let _html = document.getElementsByClassName("hl-box")[0].innerHTML
     let pellContent = document.getElementsByClassName("pell-content")[0]
-    if (!this.isDOM(this.editorActiveEle)) { this.addOnePElement(pellContent) }
+    if (this.isTextNode(this.editorActiveEle)) {
+      this.insertTextAfterOneRow(this.editorActiveEle)
+    }
+    // // 内部为空时插入一行
+    if (!this.editorActiveEle || this.editorActiveEle.className === "pell-content") {
+      this.insertLastRow(pellContent)
+    }
     let focusNode = this.editorActiveEle;
-    let codeNode = document.createElement("pre");
-    codeNode.innerHTML = `<span class="mac-window-type"><i></i><i></i><i></i><span class="mac-window-type-title">${this.state.langVis}</span></span>${_html}`
-    pellContent.replaceChild(codeNode, focusNode)
-    this.addOnePElement(pellContent)
+
+    // 使用创建 dom 元素来兼容 IE
+    // let codeNode = document.createElement("pre");
+    // codeNode.innerHTML = `<span class="mac-window"><i></i><i></i><i></i><span class="mac-window-title">${this.state.langVis}</span></span>${_html}`
+    // pellContent.replaceChild(codeNode, focusNode)
+    // this.insertOneRow(focusNode) // 插入代码后空行一格
+
+    pellContent.focus()
+    var range = window.getSelection();
+    range.selectAllChildren(focusNode)
+    range.collapseToEnd();
+    exec("insertHTML", `<pre contenteditable="false"><span class="mac-window"><i></i><i></i><i></i><span class="mac-window-title">${this.state.langVis}</span></span>${_html}</pre><p></br></p>`)
+
+
     this.setState({
       html: pellContent.innerHTML,
       code: "",

@@ -18,7 +18,7 @@
   position: relative;
   padding: 20px;
   padding-top: 45px;
-
+  user-modify: read-only;
 }
 .pell-content>pre{
   position: relative;
@@ -37,8 +37,8 @@
   background-color: #eee;
   background: linear-gradient(#eee, #dbdbdb); /* 标准的语法（必须放在最后） */
   z-index: 99;
-  /* border-radius: 8px 8px 0 0; */
   text-align: center;
+  border-bottom: 1px solid #aaa;
 }
 .pell-content>pre>span i{
   position: absolute;
