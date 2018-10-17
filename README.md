@@ -3,8 +3,9 @@ Golang server (base Gin & React )
 
 ## Sample
 
-![Sample](/sample_zh.png)
-![Sample](/sample.png)
+![Sample](images/editor.png)
+![Sample](images/sample_zh.png)
+![Sample](images/sample.png)
 
 ```bash
 # get
