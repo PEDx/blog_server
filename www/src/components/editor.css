@@ -3,10 +3,74 @@
   height: auto;
   min-height: 600px;
 }
+.pell-content:empty:before{
+  content: "写点什么..";
+}
+/*焦点时内容为空*/
+/* .pell-content:focus:before{
+  content:none;
+} */
 .pell-actionbar{
   background-color: transparent;
 }
 
+.pell-content code{
+  position: relative;
+  padding: 20px;
+  padding-top: 45px;
+
+}
+.pell-content>pre{
+  position: relative;
+  margin-bottom: 24px;
+  overflow: hidden;
+  border-radius: 8px;
+  box-sizing: border-box;
+  box-shadow: 0px 12px 16px #aaa;
+}
+.pell-content>pre>span{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 24px;
+  background-color: #eee;
+  background: linear-gradient(#eee, #dbdbdb); /* 标准的语法（必须放在最后） */
+  z-index: 99;
+  /* border-radius: 8px 8px 0 0; */
+  text-align: center;
+}
+.pell-content>pre>span i{
+  position: absolute;
+  top: 7px;
+  left: 10px;
+  content: "";
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 6px;
+}
+
+.pell-content>pre>span>span{
+  display: inline-block;
+  height: 100%;
+  line-height: 24px;
+  font-family: 'PingFangSC-Regular', 'PingFang SC', 'Microsoft YaHei', Arial, Helvetica, 'WenQuanYi Micro Hei', 'tohoma,sans-serif';
+  font-weight: 500;
+}
+
+
+.pell-content>pre>span i:nth-child(1) {
+  background-color: #ff7769;
+}
+.pell-content>pre>span i:nth-child(2) {
+  left: 30px;
+  background-color: #ffc73b;
+}
+.pell-content>pre>span i:nth-child(3) {
+  left: 50px;
+  background-color: #24cf52;
+}
 h1 {
   font-size: 56px;
   line-height: 96px;

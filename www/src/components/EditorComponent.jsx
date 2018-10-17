@@ -5,7 +5,7 @@ import "../../node_modules/pell/dist/pell.min.css"
 import "./editor.css"
 import Highlight from 'react-highlight'
 
-import "../../node_modules/highlight.js/styles/rainbow.css"
+import "./codeTheme.css"
 
 const { TextArea } = Input;
 const Option = Select.Option;
@@ -16,7 +16,8 @@ export default class extends Component {
     this.options = props.options
     this.state = {
       html: null,
-      lang: 'javascript'
+      lang: 'javascript',
+      langVis: 'Javascript',
     }
     this.editorActiveEle = null
     this.isDOM = (typeof HTMLElement === 'object') ?
@@ -28,7 +29,7 @@ export default class extends Component {
       }
   }
   componentDidMount() {
-    const editor = init({
+    init({
       element: this.editorElement,
       onChange: html => {
         this.setState({
@@ -85,7 +86,7 @@ export default class extends Component {
       styleWithCSS: true,
     })
 
-    editor.content.innerHTML = '<p><br/></p>'
+    // editor.content.innerHTML = '<p><br/></p>'
 
 
     let pellContent = document.getElementsByClassName("pell-content")[0]
@@ -109,7 +110,7 @@ export default class extends Component {
     this.editorActiveEle = _p
   }
   getContentHtml() {
-    return this.state.html || ""
+    return `<div class="article-content">${this.state.html}<div>` || ""
   }
   handleOk() {
     let _html = document.getElementsByClassName("hl-box")[0].innerHTML
@@ -117,11 +118,11 @@ export default class extends Component {
     if (!this.isDOM(this.editorActiveEle)) { this.addOnePElement(pellContent) }
     let focusNode = this.editorActiveEle;
     let codeNode = document.createElement("pre");
-    codeNode.style.pointerEvents = "none";
-    codeNode.innerHTML = _html
+    codeNode.innerHTML = `<span class="mac-window-type"><i></i><i></i><i></i><span class="mac-window-type-title">${this.state.langVis}</span></span>${_html}`
     pellContent.replaceChild(codeNode, focusNode)
     this.addOnePElement(pellContent)
     this.setState({
+      html: pellContent.innerHTML,
       code: "",
       visible: false
     })
@@ -132,9 +133,10 @@ export default class extends Component {
       visible: false
     })
   }
-  handleChange(value) {
+  handleChange(value, e) {
     this.setState({
-      lang: value
+      lang: value,
+      langVis: e.props.children
     })
   }
   onTextScroll(e) {
@@ -171,22 +173,22 @@ export default class extends Component {
             <Option value="htmlbars">HTML</Option>
           </Select>
           <TextArea rows={18} value={this.state.code} onChange={this.textChange.bind(this)} onScroll={this.onTextScroll.bind(this)}
-          style={{
-            fontFamily: "'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace",
-            // color: "red",
-            color: "transparent",
-            border: "none",
-            padding: "5px",
-            position: "absolute",
-            top: "131px",
-            left: "24px",
-            width: "790px",
-            height: "378px",
-            backgroundColor: "transparent",
-            whiteSpace: "nowrap",
-            overflowX: "auto",
-            caretColor: "#eee" /* 光标颜色 */
-          }} ref={e => this.textareaEle = e} />
+            style={{
+              fontFamily: "'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace",
+              // color: "red",
+              color: "transparent",
+              border: "none",
+              padding: "5px",
+              position: "absolute",
+              top: "131px",
+              left: "24px",
+              width: "790px",
+              height: "378px",
+              backgroundColor: "transparent",
+              whiteSpace: "nowrap",
+              overflowX: "auto",
+              caretColor: "#eee" /* 光标颜色 */
+            }} ref={e => this.textareaEle = e} />
           <div style={{
             width: "790px",
             height: "378px",

@@ -15,7 +15,9 @@ export default class  extends Component {
       <div className="app-edit-article">
         <Editor ref={e => this.editor = e}></Editor>
         <Button onClick={this.getContent.bind(this)}>发布</Button>
-        <Button onClick={this.getContent.bind(this)}>预览</Button>
+        <Button style={{
+          marginLeft: "20px"
+        }} onClick={this.getContent.bind(this)}>预览</Button>
       </div>
     )
   }
