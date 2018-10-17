@@ -149,12 +149,14 @@ export default class extends Component {
   handleOk() {
     let _html = document.getElementsByClassName("hl-box")[0].innerHTML
     let pellContent = document.getElementsByClassName("pell-content")[0]
+    let flag = false
     if (this.isTextNode(this.editorActiveEle)) {
       this.insertTextAfterOneRow(this.editorActiveEle)
     }
     // // 内部为空时插入一行
     if (!this.editorActiveEle || this.editorActiveEle.className === "pell-content") {
       this.insertLastRow(pellContent)
+      flag = true
     }
     let focusNode = this.editorActiveEle;
 
@@ -168,6 +170,7 @@ export default class extends Component {
     var range = window.getSelection();
     range.selectAllChildren(focusNode)
     range.collapseToEnd();
+    flag && pellContent.removeChild(focusNode) // 不移除会有 bug
     exec("insertHTML", `<pre contenteditable="false"><span class="mac-window"><i></i><i></i><i></i><span class="mac-window-title">${this.state.langVis}</span></span>${_html}</pre><p></br></p>`)
 
 
