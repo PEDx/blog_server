@@ -4,8 +4,8 @@ Author: Pedro Oliveira <kanytu@gmail . com>
 */
 
 .hljs {
-  color: #a9b7c6;
-  background: #12263a;
+  color: #111;
+  background: #fdf6e3;
   display: block;
   overflow-x: auto;
   padding: 0.5em;
@@ -65,6 +65,18 @@ Author: Pedro Oliveira <kanytu@gmail . com>
   font-weight: bold;
 }
 
-.hljs-built_in{
+.hljs-built_in {
+  color: #ffab00;
+}
+
+.hljs-dark {
+  color: #a9b7c6;
+  background: #12263a;
+  display: block;
+  overflow-x: auto;
+  padding: 0.5em;
+}
+
+.hljs-dark .hljs-built_in {
   color: #ffeb3b;
 }

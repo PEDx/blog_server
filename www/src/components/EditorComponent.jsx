@@ -17,6 +17,7 @@ export default class extends Component {
     this.state = {
       html: null,
       lang: 'javascript',
+      langColor: 'hljs hljs-dark',
       langVis: 'Javascript',
     }
     this.editorActiveEle = null
@@ -114,6 +115,7 @@ export default class extends Component {
     pellContent.addEventListener("keyup", () => {
       let node = window.getSelection().focusNode
       this.editorActiveEle = node
+      // console.log(node);
     })
 
   }
@@ -135,6 +137,12 @@ export default class extends Component {
     this.insertAfter(_p, targetEl.parentNode)
     this.editorActiveEle = _p
   }
+  replaceOneRow(node) {
+    let _p = document.createElement("p")
+    _p.innerHTML = "<br/>"
+    node.parentNode.replaceChild(_p, node)
+    this.editorActiveEle = _p
+  }
   insertAfter(newEl, targetEl) {
     var parentEl = targetEl.parentNode;
     if (parentEl.lastChild === targetEl) {
@@ -150,35 +158,60 @@ export default class extends Component {
     let _html = document.getElementsByClassName("hl-box")[0].innerHTML
     let pellContent = document.getElementsByClassName("pell-content")[0]
     let flag = false
+    // debugger
     if (this.isTextNode(this.editorActiveEle)) {
       this.insertTextAfterOneRow(this.editorActiveEle)
+      flag = true
+      console.log("isTextNode");
     }
     // // 内部为空时插入一行
     if (!this.editorActiveEle || this.editorActiveEle.className === "pell-content") {
       this.insertLastRow(pellContent)
       flag = true
+      console.log("editorActiveEle");
     }
     let focusNode = this.editorActiveEle;
+
+    console.log(focusNode.parentNode);
+    console.log(focusNode);
 
     // 使用创建 dom 元素来兼容 IE
     // let codeNode = document.createElement("pre");
     // codeNode.innerHTML = `<span class="mac-window"><i></i><i></i><i></i><span class="mac-window-title">${this.state.langVis}</span></span>${_html}`
     // pellContent.replaceChild(codeNode, focusNode)
-    // this.insertOneRow(focusNode) // 插入代码后空行一格
+    // this.insertOneRow(codeNode) // 插入代码后空行一格
 
     pellContent.focus()
     var range = window.getSelection();
     range.selectAllChildren(focusNode)
     range.collapseToEnd();
-    flag && pellContent.removeChild(focusNode) // 不移除会有 bug
-    exec("insertHTML", `<pre contenteditable="false"><span class="mac-window"><i></i><i></i><i></i><span class="mac-window-title">${this.state.langVis}</span></span>${_html}</pre><p></br></p>`)
-
+    let PID = `${this.generateRandomAlphaNum(10)}`
+    if (flag) focusNode && pellContent.removeChild(focusNode) // 不移除会有 bug
+    exec("insertHTML", `<pre id="${PID}" contenteditable="false"><span class="mac-window"><i></i><i></i><i></i><span class="mac-window-title">${this.state.langVis}</span></span>${_html}</pre>`)
+    if (!flag) {
+      // let ele = document.getElementById(this.code_p_id)
+      // ele && pellContent.removeChild(ele) // 不移除会有 bug
+    }
+    this.codeElement = document.getElementById(PID)
+    let _p = document.createElement("p")
+    _p.innerHTML = "<br/>"
+    // let _id = `${PID}_code_p`
+    // _p.id = _id
+    // this.code_p_id = _id
+    this.insertAfter(_p, this.codeElement)
+    this.editorActiveEle = _p
+    // pellContent.focus()
 
     this.setState({
       html: pellContent.innerHTML,
       code: "",
       visible: false
     })
+  }
+  generateRandomAlphaNum(len) {
+    var rdmString = "";
+    for (; rdmString.length < len; rdmString += Math.random().toString(36).substr(2));
+    return rdmString.substr(0, len);
   }
   handleCancel() {
     this.setState({
@@ -190,6 +223,11 @@ export default class extends Component {
     this.setState({
       lang: value,
       langVis: e.props.children
+    })
+  }
+  handleColorChange(value, e) {
+    this.setState({
+      langColor: value,
     })
   }
   onTextScroll(e) {
@@ -209,15 +247,17 @@ export default class extends Component {
         <div ref={(e) => { this.editorElement = e; }} ></div>
         <Modal
           width="840px"
-          title="插入代码"
+          wrapClassName="editor-code-modal"
+          title="插入代码块"
           visible={this.state.visible}
+          okText="插入"
+          cancelText="取消"
           onOk={this.handleOk.bind(this)}
           onCancel={this.handleCancel.bind(this)}
         >
           <Select defaultValue="javascript" style={{
-            width: 120,
+            width: 200,
             float: "right",
-            marginBottom: "20px"
           }} onChange={this.handleChange.bind(this)}>
             <Option value="javascript">Javascript</Option>
             <Option value="java">Java</Option>
@@ -225,35 +265,53 @@ export default class extends Component {
             <Option value="cpp">C++</Option>
             <Option value="htmlbars">HTML</Option>
           </Select>
-          <TextArea rows={18} value={this.state.code} onChange={this.textChange.bind(this)} onScroll={this.onTextScroll.bind(this)}
-            style={{
-              fontFamily: "'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace",
-              // color: "red",
-              color: "transparent",
-              border: "none",
-              padding: "5px",
-              position: "absolute",
-              top: "131px",
-              left: "24px",
-              width: "790px",
-              height: "378px",
-              backgroundColor: "transparent",
-              whiteSpace: "nowrap",
-              overflowX: "auto",
-              caretColor: "#eee" /* 光标颜色 */
-            }} ref={e => this.textareaEle = e} />
-          <div style={{
-            width: "790px",
-            height: "378px",
-            overflow: "auto"
-          }} className="hl-box">
-            <Highlight className={this.state.lang} >
-              {(this.state.code || "") + "\n"}
-            </Highlight>
+          <Select defaultValue="hljs hljs-dark" style={{
+            width: 200,
+            float: "right",
+          }} onChange={this.handleColorChange.bind(this)}>
+            <Option value="hljs hljs-dark">dark</Option>
+            <Option value="hljs">white</Option>
+          </Select>
+          <div className="code-editor">
+            <div className="code-editor-window">
+              <span className="mac-window">
+                <i></i><i></i><i></i>
+                <span className="mac-window-title">{this.state.langVis}</span>
+              </span>
+            </div>
+            <div className="code-editor-content">
+              <TextArea rows={18} value={this.state.code} onChange={this.textChange.bind(this)} onScroll={this.onTextScroll.bind(this)}
+                style={{
+                  fontFamily: "'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace",
+                  // color: "red",
+                  fontSize: "12px",
+                  lineHeight: "12px",
+                  color: "transparent",
+                  border: "none",
+                  padding: "20px",
+                  position: "absolute",
+                  top: "24px",
+                  left: "0px",
+                  width: "100%",
+                  height: "378px",
+                  backgroundColor: "transparent",
+                  whiteSpace: "nowrap",
+                  overflowX: "auto",
+                  caretColor: this.state.langColor === "hljs" ? "#333" : "#eee" /* 光标颜色 */
+                }} ref={e => this.textareaEle = e} />
+              <div style={{
+                width: "100%",
+                height: "378px",
+                overflow: "auto",
+              }} className="hl-box">
+                <Highlight className={`${this.state.lang}  ${this.state.langColor}`} >
+                  {(this.state.code || "") + "\n"}
+                </Highlight>
+              </div>
+            </div>
           </div>
-
         </Modal>
-      </div>
+      </div >
     )
   }
 }

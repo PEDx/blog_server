@@ -1,4 +1,4 @@
-.pell-content{
+.pell-content,.article-content{
   font-family: "LiSong Pro Light", georgia, times, serif;
   height: auto;
   min-height: 600px;
@@ -6,21 +6,19 @@
 .pell-content:empty:before{
   content: "写点什么..";
 }
-/*焦点时内容为空*/
-/* .pell-content:focus:before{
-  content:none;
-} */
+
 .pell-actionbar{
   background-color: transparent;
 }
-
-.pell-content code{
+.ant-modal-body{
+  padding-top: 10px;
+}
+.pell-content code, .article-content code{
   position: relative;
   padding: 20px;
-  padding-top: 45px;
   user-modify: read-only;
 }
-.pell-content>pre{
+.pell-content>pre, .article-content>pre{
   position: relative;
   margin-bottom: 24px;
   overflow: hidden;
@@ -28,19 +26,28 @@
   box-sizing: border-box;
   box-shadow: 0px 12px 16px #aaa;
 }
-.pell-content>pre>span{
-  position: absolute;
-  top: 0;
-  left: 0;
+.code-editor{
+  position: relative;
+  margin-top: 40px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+.code-editor-window{
+  position: relative;
+  height: 24px;
+}
+.mac-window{
+  display: inline-block;
   width: 100%;
   height: 24px;
   background-color: #eee;
   background: linear-gradient(#eee, #dbdbdb); /* 标准的语法（必须放在最后） */
   z-index: 99;
   text-align: center;
-  border-bottom: 1px solid #aaa;
+  border-bottom: 1px solid #c1c1c1;
+  box-sizing: border-box;
 }
-.pell-content>pre>span i{
+.mac-window i{
   position: absolute;
   top: 7px;
   left: 10px;
@@ -51,7 +58,7 @@
   border-radius: 6px;
 }
 
-.pell-content>pre>span>span{
+.mac-window>span{
   display: inline-block;
   height: 100%;
   line-height: 24px;
@@ -60,14 +67,14 @@
 }
 
 
-.pell-content>pre>span i:nth-child(1) {
+.mac-window i:nth-child(1) {
   background-color: #ff7769;
 }
-.pell-content>pre>span i:nth-child(2) {
+.mac-window i:nth-child(2) {
   left: 30px;
   background-color: #ffc73b;
 }
-.pell-content>pre>span i:nth-child(3) {
+.mac-window i:nth-child(3) {
   left: 50px;
   background-color: #24cf52;
 }
@@ -142,5 +149,9 @@ blockquote{
   padding: 0px!important;
 }
 .hl-box code{
-  padding: 5px!important;
+  padding: 20px!important;
+}
+.hljs{
+  font-size: 12px!important;
+  line-height: 12px;
 }
