@@ -162,18 +162,18 @@ export default class extends Component {
     if (this.isTextNode(this.editorActiveEle)) {
       this.insertTextAfterOneRow(this.editorActiveEle)
       flag = true
-      console.log("isTextNode");
+      // console.log("isTextNode");
     }
     // // 内部为空时插入一行
     if (!this.editorActiveEle || this.editorActiveEle.className === "pell-content") {
       this.insertLastRow(pellContent)
       flag = true
-      console.log("editorActiveEle");
+      // console.log("editorActiveEle");
     }
     let focusNode = this.editorActiveEle;
 
-    console.log(focusNode.parentNode);
-    console.log(focusNode);
+    // console.log(focusNode.parentNode);
+    // console.log(focusNode);
 
     // 使用创建 dom 元素来兼容 IE
     // let codeNode = document.createElement("pre");
@@ -188,16 +188,9 @@ export default class extends Component {
     let PID = `${this.generateRandomAlphaNum(10)}`
     if (flag) focusNode && pellContent.removeChild(focusNode) // 不移除会有 bug
     exec("insertHTML", `<pre id="${PID}" contenteditable="false"><span class="mac-window"><i></i><i></i><i></i><span class="mac-window-title">${this.state.langVis}</span></span>${_html}</pre>`)
-    if (!flag) {
-      // let ele = document.getElementById(this.code_p_id)
-      // ele && pellContent.removeChild(ele) // 不移除会有 bug
-    }
     this.codeElement = document.getElementById(PID)
     let _p = document.createElement("p")
     _p.innerHTML = "<br/>"
-    // let _id = `${PID}_code_p`
-    // _p.id = _id
-    // this.code_p_id = _id
     this.insertAfter(_p, this.codeElement)
     this.editorActiveEle = _p
     // pellContent.focus()
