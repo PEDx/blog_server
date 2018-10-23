@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
-import { Modal, Input, Select } from 'antd';
+import { Modal, Select } from 'antd';
 import { exec, init } from 'pell'
 import "../../node_modules/pell/dist/pell.min.css"
-import "./editor.css"
-import Highlight from 'react-highlight'
+import CodeEditor from './CodeEditorComponent'
 
+import "./editor.css"
 import "./codeTheme.css"
 
-const { TextArea } = Input;
 const Option = Select.Option;
 
 export default class extends Component {
@@ -17,7 +16,7 @@ export default class extends Component {
     this.state = {
       html: null,
       lang: 'javascript',
-      langColor: 'hljs hljs-dark',
+      theme: 'hljs hljs-dark',
       langVis: 'Javascript',
     }
     this.editorActiveEle = null
@@ -42,7 +41,6 @@ export default class extends Component {
         this.setState({
           html: html,
           visible: false,
-          code: ""
         })
       },
       actions: [
@@ -62,14 +60,6 @@ export default class extends Component {
         "quote",
         "olist",
         "ulist",
-        // {
-        //   icon: '&#8213;',
-        //   title: 'Horizontal Line',
-        //   result: () => {
-        //     exec('insertHorizontalRule');
-        //     exec("formatBlock", '<pre>')
-        //   }
-        // },
         {
           icon: 'code',
           title: 'code',
@@ -99,10 +89,7 @@ export default class extends Component {
       defaultParagraphSeparator: 'p',
       styleWithCSS: true,
     })
-
     // editor.content.innerHTML = '<p><br/></p>'
-
-
     let pellContent = document.getElementsByClassName("pell-content")[0]
     pellContent.focus()
     this.editorActiveEle = pellContent.getElementsByTagName("p")[0]
@@ -125,22 +112,10 @@ export default class extends Component {
     parent.appendChild(_p)
     this.editorActiveEle = _p
   }
-  insertOneRow(targetEl) {
-    let _p = document.createElement("p")
-    _p.innerHTML = "<br/>"
-    this.insertAfter(_p, targetEl)
-    this.editorActiveEle = _p
-  }
   insertTextAfterOneRow(targetEl) {
     let _p = document.createElement("p")
     _p.innerHTML = "<br/>"
     this.insertAfter(_p, targetEl.parentNode)
-    this.editorActiveEle = _p
-  }
-  replaceOneRow(node) {
-    let _p = document.createElement("p")
-    _p.innerHTML = "<br/>"
-    node.parentNode.replaceChild(_p, node)
     this.editorActiveEle = _p
   }
   insertAfter(newEl, targetEl) {
@@ -155,7 +130,10 @@ export default class extends Component {
     return `<div class="article-content">${this.state.html}<div>` || ""
   }
   handleOk() {
-    let _html = document.getElementsByClassName("hl-box")[0].innerHTML
+    // 取得代码编辑器中的 html
+    let _html = this.codeEditorEle.getCodeHtml()
+
+
     let pellContent = document.getElementsByClassName("pell-content")[0]
     let flag = false
     // debugger
@@ -171,15 +149,8 @@ export default class extends Component {
       // console.log("editorActiveEle");
     }
     let focusNode = this.editorActiveEle;
-
     // console.log(focusNode.parentNode);
     // console.log(focusNode);
-
-    // 使用创建 dom 元素来兼容 IE
-    // let codeNode = document.createElement("pre");
-    // codeNode.innerHTML = `<span class="mac-window"><i></i><i></i><i></i><span class="mac-window-title">${this.state.langVis}</span></span>${_html}`
-    // pellContent.replaceChild(codeNode, focusNode)
-    // this.insertOneRow(codeNode) // 插入代码后空行一格
 
     pellContent.focus()
     var range = window.getSelection();
@@ -193,13 +164,12 @@ export default class extends Component {
     _p.innerHTML = "<br/>"
     this.insertAfter(_p, this.codeElement)
     this.editorActiveEle = _p
-    // pellContent.focus()
 
     this.setState({
       html: pellContent.innerHTML,
-      code: "",
       visible: false
     })
+    this.codeEditorEle.clearCode()
   }
   generateRandomAlphaNum(len) {
     var rdmString = "";
@@ -208,9 +178,9 @@ export default class extends Component {
   }
   handleCancel() {
     this.setState({
-      code: "",
       visible: false
     })
+    this.codeEditorEle.clearCode()
   }
   handleChange(value, e) {
     this.setState({
@@ -220,17 +190,7 @@ export default class extends Component {
   }
   handleColorChange(value, e) {
     this.setState({
-      langColor: value,
-    })
-  }
-  onTextScroll(e) {
-    var t = document.getElementsByClassName("hl-box")[0].getElementsByTagName("code")[0]
-    t.scrollTop = e.target.scrollTop
-    t.scrollLeft = e.target.scrollLeft
-  }
-  textChange(e) {
-    this.setState({
-      code: e.target.value
+      theme: value,
     })
   }
   render() {
@@ -274,44 +234,7 @@ export default class extends Component {
               <Option value="hljs">Vue Light</Option>
             </Select>
           </div>
-          <div className="code-editor">
-            <div className="code-editor-window">
-              <span className="mac-window">
-                <i></i><i></i><i></i>
-                <span className="mac-window-title">{this.state.langVis}</span>
-              </span>
-            </div>
-            <div className="code-editor-content">
-              <TextArea rows={18} value={this.state.code} onChange={this.textChange.bind(this)} onScroll={this.onTextScroll.bind(this)}
-                style={{
-                  fontFamily: "'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace",
-                  // color: "red",
-                  fontSize: "12px",
-                  lineHeight: "12px",
-                  color: "transparent",
-                  border: "none",
-                  padding: "20px",
-                  position: "absolute",
-                  top: "24px",
-                  left: "0px",
-                  width: "100%",
-                  height: "378px",
-                  backgroundColor: "transparent",
-                  whiteSpace: "nowrap",
-                  overflowX: "auto",
-                  caretColor: this.state.langColor === "hljs" ? "#333" : "#eee" /* 光标颜色 */
-                }} ref={e => this.textareaEle = e} />
-              <div style={{
-                width: "100%",
-                height: "378px",
-                overflow: "auto",
-              }} className="hl-box">
-                <Highlight className={`${this.state.lang}  ${this.state.langColor}`} >
-                  {(this.state.code || "") + "\n"}
-                </Highlight>
-              </div>
-            </div>
-          </div>
+          <CodeEditor  ref={(e) => { this.codeEditorEle = e; }} lang={this.state.lang} langVis={this.state.langVis} theme={this.state.theme}></CodeEditor>
         </Modal>
       </div >
     )

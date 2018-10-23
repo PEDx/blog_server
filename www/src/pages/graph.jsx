@@ -12,7 +12,10 @@ import main from '../graph/Gargantua/Image.fs'
 class App extends Component {
   render() {
     return (
-      <div className="app-graph">
+      <div className="app-graph" style={{
+        width: 160 * 5 + "px",
+        height: 90 * 5 + "px"
+      }}>
         <Shadertoy
           buffers={[
             {

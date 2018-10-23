@@ -36,8 +36,8 @@ export default class ShadertoyComponent extends Component {
   }
   render() {
     return (
-      <div>
-        <canvas ref={(e) => { this.canvasElement = e; }} style={{ "width": "100%", "height": "100%" }}></canvas>
+      <div style={{ "width": "100%", "height": "100%" }}>
+        <canvas ref={(e) => { this.canvasElement = e; }}  style={{ "width": "100%", "height": "100%" }}></canvas>
       </div>
     )
   }
