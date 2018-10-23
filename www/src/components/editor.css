@@ -28,8 +28,8 @@
 }
 .code-editor{
   position: relative;
-  margin-top: 40px;
-  border-radius: 8px;
+  margin-top: 46px;
+  border-radius: 6px;
   overflow: hidden;
 }
 .code-editor-window{

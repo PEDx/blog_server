@@ -227,7 +227,6 @@ export default class extends Component {
     var t = document.getElementsByClassName("hl-box")[0].getElementsByTagName("code")[0]
     t.scrollTop = e.target.scrollTop
     t.scrollLeft = e.target.scrollLeft
-
   }
   textChange(e) {
     this.setState({
@@ -248,23 +247,33 @@ export default class extends Component {
           onOk={this.handleOk.bind(this)}
           onCancel={this.handleCancel.bind(this)}
         >
-          <Select defaultValue="javascript" style={{
-            width: 200,
-            float: "right",
-          }} onChange={this.handleChange.bind(this)}>
-            <Option value="javascript">Javascript</Option>
-            <Option value="java">Java</Option>
-            <Option value="go">Golang</Option>
-            <Option value="cpp">C++</Option>
-            <Option value="htmlbars">HTML</Option>
-          </Select>
-          <Select defaultValue="hljs hljs-dark" style={{
-            width: 200,
-            float: "right",
-          }} onChange={this.handleColorChange.bind(this)}>
-            <Option value="hljs hljs-dark">dark</Option>
-            <Option value="hljs">white</Option>
-          </Select>
+          <div className="selec f-fr" style={{
+            marginLeft: "20px"
+          }}>
+            <label htmlFor="" style={{
+              marginRight: "10px"
+            }}>语言:</label>
+            <Select defaultValue="javascript" style={{
+              width: 200,
+            }} onChange={this.handleChange.bind(this)}>
+              <Option value="javascript">Javascript</Option>
+              <Option value="java">Java</Option>
+              <Option value="go">Golang</Option>
+              <Option value="cpp">C++</Option>
+              <Option value="htmlbars">HTML</Option>
+            </Select>
+          </div>
+          <div className="selec f-fr" >
+            <label htmlFor="" style={{
+              marginRight: "10px"
+            }}>主题:</label>
+            <Select defaultValue="hljs hljs-dark" style={{
+              width: 200,
+            }} onChange={this.handleColorChange.bind(this)}>
+              <Option value="hljs hljs-dark">Vue Dark</Option>
+              <Option value="hljs">Vue Light</Option>
+            </Select>
+          </div>
           <div className="code-editor">
             <div className="code-editor-window">
               <span className="mac-window">
